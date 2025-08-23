@@ -70,6 +70,9 @@ ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Anyone can view available apartments" ON public.apartments
   FOR SELECT USING (is_available = true);
 
+CREATE POLICY "Anonymous users can view available apartments" ON public.apartments
+  FOR SELECT USING (is_available = true);
+
 CREATE POLICY "Admins can manage apartments" ON public.apartments
   FOR ALL USING (
     EXISTS (

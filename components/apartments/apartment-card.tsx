@@ -9,6 +9,7 @@ import type { Apartment } from "@/lib/types"
 
 interface ApartmentCardProps {
   apartment: Apartment
+  onSelect: () => void
 }
 
 const amenityIcons: Record<string, React.ReactNode> = {
@@ -26,11 +27,14 @@ const amenityIcons: Record<string, React.ReactNode> = {
   historic_building: <span className="text-xs">🏛️</span>,
 }
 
-export function ApartmentCard({ apartment }: ApartmentCardProps) {
+export function ApartmentCard({ apartment, onSelect }: ApartmentCardProps) {
   const mainImage = apartment.images?.[0] || "/placeholder.svg?height=300&width=400"
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card 
+      className="overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+      onClick={onSelect}
+    >
       <div className="md:flex">
         {/* Image */}
         <div className="md:w-1/3 relative h-64 md:h-auto">

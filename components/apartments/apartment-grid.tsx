@@ -3,9 +3,10 @@ import type { Apartment } from "@/lib/types"
 
 interface ApartmentGridProps {
   apartments: Apartment[]
+  onApartmentSelect: (apartment: Apartment) => void
 }
 
-export function ApartmentGrid({ apartments }: ApartmentGridProps) {
+export function ApartmentGrid({ apartments, onApartmentSelect }: ApartmentGridProps) {
   if (apartments.length === 0) {
     return (
       <div className="text-center py-12">
@@ -21,7 +22,11 @@ export function ApartmentGrid({ apartments }: ApartmentGridProps) {
   return (
     <div className="space-y-6">
       {apartments.map((apartment) => (
-        <ApartmentCard key={apartment.id} apartment={apartment} />
+        <ApartmentCard 
+          key={apartment.id} 
+          apartment={apartment}
+          onSelect={() => onApartmentSelect(apartment)}
+        />
       ))}
     </div>
   )
