@@ -8,10 +8,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Search, Filter } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useCallback } from "react"
+import { useI18n } from "@/lib/i18n/context"
 
 export function ApartmentFilters() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { t } = useI18n()
 
   const [city, setCity] = useState(searchParams.get("city") || "all")
   const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "0")
@@ -61,19 +63,19 @@ export function ApartmentFilters() {
       <CardContent className="p-6">
         <div className="flex items-center gap-2 mb-4">
           <Filter className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold">Filtri / Filters</h2>
+          <h2 className="text-lg font-semibold">{t("filter")}</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* City */}
           <div className="space-y-2">
-            <Label htmlFor="city">Grad / City</Label>
+            <Label htmlFor="city">{t("city")}</Label>
             <Select value={city} onValueChange={setCity}>
               <SelectTrigger>
-                <SelectValue placeholder="Odaberite grad / Select city" />
+                <SelectValue placeholder={t("selectCity")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Svi gradovi / All cities</SelectItem>
+                <SelectItem value="all">{t("allCities")}</SelectItem>
                 <SelectItem value="Split">Split</SelectItem>
                 <SelectItem value="Dubrovnik">Dubrovnik</SelectItem>
                 <SelectItem value="Pula">Pula</SelectItem>
@@ -85,7 +87,7 @@ export function ApartmentFilters() {
 
           {/* Price Range */}
           <div className="space-y-2">
-            <Label htmlFor="minPrice">Min cijena / Min price (€)</Label>
+            <Label htmlFor="minPrice">{t("minPrice")}</Label>
             <Input
               id="minPrice"
               type="number"
@@ -96,7 +98,7 @@ export function ApartmentFilters() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maxPrice">Max cijena / Max price (€)</Label>
+            <Label htmlFor="maxPrice">{t("maxPrice")}</Label>
             <Input
               id="maxPrice"
               type="number"
@@ -108,35 +110,36 @@ export function ApartmentFilters() {
 
           {/* Guests */}
           <div className="space-y-2">
-            <Label htmlFor="guests">Gosti / Guests</Label>
+            <Label htmlFor="guests">{t("guests")}</Label>
             <Select value={guests} onValueChange={setGuests}>
               <SelectTrigger>
-                <SelectValue placeholder="Broj gostiju / Number of guests" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="any">Bilo koji broj / Any number</SelectItem>
-                <SelectItem value="1">1</SelectItem>
-                <SelectItem value="2">2</SelectItem>
-                <SelectItem value="3">3</SelectItem>
-                <SelectItem value="4">4</SelectItem>
-                <SelectItem value="5">5</SelectItem>
-                <SelectItem value="6">6+</SelectItem>
+                <SelectItem value="any">{t("anyNumber")}</SelectItem>
+                {Array.from({ length: 8 }, (_, i) => i + 1).map((num) => (
+                  <SelectItem key={num} value={num.toString()}>
+                    {num}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
           {/* Bedrooms */}
           <div className="space-y-2">
-            <Label htmlFor="bedrooms">Spavaće sobe / Bedrooms</Label>
+            <Label htmlFor="bedrooms">{t("bedrooms")}</Label>
             <Select value={bedrooms} onValueChange={setBedrooms}>
               <SelectTrigger>
-                <SelectValue placeholder="Broj soba / Number of rooms" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="any">Bilo koji broj / Any number</SelectItem>
-                <SelectItem value="1">1</SelectItem>
-                <SelectItem value="2">2</SelectItem>
-                <SelectItem value="3">3+</SelectItem>
+                <SelectItem value="any">{t("anyNumber")}</SelectItem>
+                {Array.from({ length: 5 }, (_, i) => i + 1).map((num) => (
+                  <SelectItem key={num} value={num.toString()}>
+                    {num}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -145,10 +148,10 @@ export function ApartmentFilters() {
         <div className="flex gap-2 mt-6">
           <Button onClick={handleSearch} className="flex-1">
             <Search className="mr-2 h-4 w-4" />
-            Pretraži / Search
+            {t("search")}
           </Button>
           <Button variant="outline" onClick={handleReset}>
-            Resetiraj / Reset
+            {t("reset")}
           </Button>
         </div>
       </CardContent>

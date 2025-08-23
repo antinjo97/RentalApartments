@@ -3,13 +3,16 @@ import { Header } from "@/components/layout/header"
 import { ApartmentDetails } from "@/components/apartments/apartment-details"
 import { notFound } from "next/navigation"
 
-export default async function ApartmentPage({ params }: { params: { id: string } }) {
+export default async function ApartmentPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
+  
+  // Await params before using its properties
+  const { id } = await params
 
   const { data: apartment, error } = await supabase
     .from("apartments")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("is_available", true)
     .single()
 

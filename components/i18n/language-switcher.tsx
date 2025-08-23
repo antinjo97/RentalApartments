@@ -6,7 +6,7 @@ import { Languages } from "lucide-react"
 import { useI18n } from "@/lib/i18n/context"
 
 export function LanguageSwitcher() {
-  const { locale, setLocale } = useI18n()
+  const { locale, setLocale, languageName, languageFlag } = useI18n()
 
   return (
     <DropdownMenu>
@@ -17,10 +17,16 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setLocale("hr")} className={locale === "hr" ? "bg-accent" : ""}>
+        <DropdownMenuItem 
+          onClick={() => setLocale("hr")} 
+          className={locale === "hr" ? "bg-accent" : ""}
+        >
           🇭🇷 Hrvatski
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLocale("en")} className={locale === "en" ? "bg-accent" : ""}>
+        <DropdownMenuItem 
+          onClick={() => setLocale("en")} 
+          className={locale === "en" ? "bg-accent" : ""}
+        >
           🇬🇧 English
         </DropdownMenuItem>
       </DropdownMenuContent>

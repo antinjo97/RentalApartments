@@ -18,6 +18,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { useI18n } from "@/lib/i18n/context"
 import type { Apartment } from "@/lib/types"
 import type { User } from "@supabase/supabase-js"
 
@@ -30,6 +31,7 @@ interface BookingFormProps {
 export function BookingForm({ apartment, existingBookings, user }: BookingFormProps) {
   const router = useRouter()
   const supabase = createClient()
+  const { t, locale } = useI18n()
 
   const [checkInDate, setCheckInDate] = useState<Date>()
   const [checkOutDate, setCheckOutDate] = useState<Date>()
@@ -65,13 +67,13 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
     setError(null)
 
     if (!checkInDate || !checkOutDate) {
-      setError("Molimo odaberite datume / Please select dates")
+      setError(t("selectDates"))
       setIsLoading(false)
       return
     }
 
     if (!guestName.trim()) {
-      setError("Molimo unesite ime / Please enter your name")
+      setError(t("enterName"))
       setIsLoading(false)
       return
     }
@@ -95,7 +97,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
 
       router.push(`/booking/confirmation?booking=${data?.[0]?.id || "success"}`)
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      setError(error instanceof Error ? error.message : t("error"))
     } finally {
       setIsLoading(false)
     }
@@ -108,7 +110,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
         <Button variant="ghost" asChild>
           <Link href={`/apartments/${apartment.id}`}>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Natrag na apartman / Back to apartment
+            {t("back")} {t("to")} {t("apartment")}
           </Link>
         </Button>
       </div>
@@ -120,7 +122,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CalendarIcon className="h-5 w-5" />
-                Rezervacija / Booking
+                {t("booking")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -128,12 +130,12 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                 {/* Date Selection */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Dolazak / Check-in</Label>
+                    <Label>{t("checkIn")}</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button variant="outline" className="w-full justify-start text-left font-normal bg-transparent">
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {checkInDate ? format(checkInDate, "dd.MM.yyyy") : "Odaberite datum"}
+                          {checkInDate ? format(checkInDate, "dd.MM.yyyy") : t("selectDate")}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -154,12 +156,12 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Odlazak / Check-out</Label>
+                    <Label>{t("checkOut")}</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button variant="outline" className="w-full justify-start text-left font-normal bg-transparent">
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {checkOutDate ? format(checkOutDate, "dd.MM.yyyy") : "Odaberite datum"}
+                          {checkOutDate ? format(checkOutDate, "dd.MM.yyyy") : t("selectDate")}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -183,7 +185,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
 
                 {/* Guests */}
                 <div className="space-y-2">
-                  <Label htmlFor="guests">Broj gostiju / Number of guests</Label>
+                  <Label htmlFor="guests">{t("numberOfGuests")}</Label>
                   <Select value={guests} onValueChange={setGuests}>
                     <SelectTrigger>
                       <SelectValue />
@@ -193,7 +195,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                         <SelectItem key={num} value={num.toString()}>
                           <div className="flex items-center gap-2">
                             <Users className="h-4 w-4" />
-                            {num} {num === 1 ? "gost / guest" : "gostiju / guests"}
+                            {num} {num === 1 ? t("guest") : t("guests")}
                           </div>
                         </SelectItem>
                       ))}
@@ -205,21 +207,21 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
 
                 {/* Guest Information */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Podaci o gostu / Guest Information</h3>
+                  <h3 className="text-lg font-semibold">{t("guestInfo")}</h3>
 
                   <div className="space-y-2">
-                    <Label htmlFor="guestName">Ime i prezime / Full name *</Label>
+                    <Label htmlFor="guestName">{t("fullName")} *</Label>
                     <Input
                       id="guestName"
                       value={guestName}
                       onChange={(e) => setGuestName(e.target.value)}
-                      placeholder="Unesite vaše ime i prezime"
+                      placeholder={t("fullName")}
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="guestEmail">Email *</Label>
+                    <Label htmlFor="guestEmail">{t("email")} *</Label>
                     <Input
                       id="guestEmail"
                       type="email"
@@ -231,7 +233,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="guestPhone">Telefon / Phone</Label>
+                    <Label htmlFor="guestPhone">{t("phone")}</Label>
                     <Input
                       id="guestPhone"
                       type="tel"
@@ -242,12 +244,12 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="specialRequests">Posebni zahtjevi / Special requests</Label>
+                    <Label htmlFor="specialRequests">{t("specialRequests")}</Label>
                     <Textarea
                       id="specialRequests"
                       value={specialRequests}
                       onChange={(e) => setSpecialRequests(e.target.value)}
-                      placeholder="Imate li posebne zahtjeve ili napomene?"
+                      placeholder={t("specialRequestsPlaceholder")}
                       rows={3}
                     />
                   </div>
@@ -262,7 +264,7 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                   disabled={isLoading || !checkInDate || !checkOutDate}
                 >
                   <CreditCard className="mr-2 h-4 w-4" />
-                  {isLoading ? "Rezerviranje... / Booking..." : "Potvrdi rezervaciju / Confirm Booking"}
+                  {isLoading ? t("loading") : t("confirmBooking")}
                 </Button>
               </form>
             </CardContent>
@@ -282,23 +284,23 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
             <CardContent>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span>Cijena po noći / Price per night</span>
+                  <span>{t("pricePerNight")}</span>
                   <span>€{apartment.price_per_night}</span>
                 </div>
                 {checkInDate && checkOutDate && (
                   <>
                     <div className="flex justify-between">
-                      <span>Datumi / Dates</span>
+                      <span>{t("dates")}</span>
                       <span>
                         {format(checkInDate, "dd.MM")} - {format(checkOutDate, "dd.MM")}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Broj noći / Number of nights</span>
+                      <span>{t("numberOfNights")}</span>
                       <span>{nights}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Broj gostiju / Number of guests</span>
+                      <span>{t("numberOfGuests")}</span>
                       <span>{guests}</span>
                     </div>
                   </>
@@ -311,27 +313,27 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
           {checkInDate && checkOutDate && nights > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Pregled cijene / Price Breakdown</CardTitle>
+                <CardTitle className="text-lg">{t("priceBreakdown")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span>
-                      €{apartment.price_per_night} x {nights} {nights === 1 ? "noć" : "noći"}
+                      €{apartment.price_per_night} x {nights} {nights === 1 ? t("night") : t("nights")}
                     </span>
                     <span>€{subtotal}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Naknada za čišćenje / Cleaning fee</span>
+                    <span>{t("cleaningFee")}</span>
                     <span>€{cleaningFee}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Naknada za uslugu / Service fee</span>
+                    <span>{t("serviceFee")}</span>
                     <span>€{serviceFee}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-semibold text-base">
-                    <span>Ukupno / Total</span>
+                    <span>{t("total")}</span>
                     <span>€{total}</span>
                   </div>
                 </div>

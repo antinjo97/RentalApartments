@@ -6,7 +6,7 @@ import { MessagesManagement } from "@/components/admin/messages-management"
 export default async function AdminMessagesPage({
   searchParams,
 }: {
-  searchParams: { unread?: string }
+  searchParams: Promise<{ unread?: string }>
 }) {
   const supabase = await createClient()
 
@@ -25,10 +25,13 @@ export default async function AdminMessagesPage({
     redirect("/")
   }
 
+  // Await searchParams before using its properties
+  const params = await searchParams
+
   // Get all contact messages
   let query = supabase.from("contact_messages").select("*").order("created_at", { ascending: false })
 
-  if (searchParams.unread === "true") {
+  if (params.unread === "true") {
     query = query.eq("is_read", false)
   }
 

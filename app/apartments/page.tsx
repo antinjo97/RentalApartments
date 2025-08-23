@@ -8,6 +8,7 @@ import { ApartmentFilters } from "@/components/apartments/apartment-filters"
 import { ApartmentGrid } from "@/components/apartments/apartment-grid"
 import { ApartmentMap } from "@/components/apartments/apartment-map"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useI18n } from "@/lib/i18n/context"
 import type { Apartment } from "@/lib/types"
 
 export default function ApartmentsPage() {
@@ -17,6 +18,7 @@ export default function ApartmentsPage() {
   const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null)
   const supabase = createClient()
   const searchParams = useSearchParams()
+  const { t } = useI18n()
 
   const handleApartmentSelect = (apartment: Apartment) => {
     setSelectedApartment(apartment)
@@ -97,7 +99,7 @@ export default function ApartmentsPage() {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">Error loading apartments</h1>
+            <h1 className="text-2xl font-bold text-red-600 mb-4">{t("error")} {t("loading")} {t("apartments")}</h1>
             <p className="text-muted-foreground">{error}</p>
           </div>
         </div>
@@ -112,9 +114,9 @@ export default function ApartmentsPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Apartmani u Hrvatskoj / Apartments in Croatia</h1>
+          <h1 className="text-3xl font-bold mb-2">{t("apartmentsInCroatia")}</h1>
           <p className="text-muted-foreground">
-            Pronađite savršen apartman za vaš odmor / Find the perfect apartment for your vacation
+            {t("findPerfectApartment")}
           </p>
         </div>
 
@@ -126,7 +128,7 @@ export default function ApartmentsPage() {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground">
-            Pronađeno {apartments.length} apartmana / Found {apartments.length} apartments
+            {t("foundApartments", { count: apartments.length })}
           </p>
         </div>
 

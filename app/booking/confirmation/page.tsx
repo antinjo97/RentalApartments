@@ -10,7 +10,7 @@ import { redirect } from "next/navigation"
 export default async function BookingConfirmationPage({
   searchParams,
 }: {
-  searchParams: { booking?: string }
+  searchParams: Promise<{ booking?: string }>
 }) {
   const supabase = await createClient()
 
@@ -23,10 +23,13 @@ export default async function BookingConfirmationPage({
     redirect("/auth/login")
   }
 
+  // Await searchParams before using its properties
+  const params = await searchParams
+
   let booking = null
   let apartment = null
 
-  if (searchParams.booking && searchParams.booking !== "success") {
+  if (params.booking && params.booking !== "success") {
     const { data: bookingData } = await supabase
       .from("bookings")
       .select(
@@ -35,7 +38,7 @@ export default async function BookingConfirmationPage({
         apartment:apartments(*)
       `,
       )
-      .eq("id", searchParams.booking)
+      .eq("id", params.booking)
       .eq("user_id", user.id)
       .single()
 
