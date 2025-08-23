@@ -1,14 +1,16 @@
 "use client"
 
+import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Calendar, MapPin, Users, Phone, Mail, Search, Check, X, Eye } from "lucide-react"
-import { useState } from "react"
 import { format } from "date-fns"
 import Image from "next/image"
 import type { Booking } from "@/lib/types"
+import { createClient } from "@/lib/supabase/client"
+import { toast } from "sonner"
 
 interface BookingsManagementProps {
   bookings: (Booking & { apartment: any; user: any })[]
@@ -24,6 +26,63 @@ const statusLabels = {
 export function BookingsManagement({ bookings }: BookingsManagementProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "confirmed" | "cancelled" | "completed">("all")
+  const [loadingBookings, setLoadingBookings] = useState<Set<string>>(new Set())
+
+  const supabase = createClient()
+
+  const confirmBooking = async (bookingId: string) => {
+    setLoadingBookings(prev => new Set(prev).add(bookingId))
+    
+    try {
+      const { error } = await supabase
+        .from("bookings")
+        .update({ status: "confirmed" })
+        .eq("id", bookingId)
+
+      if (error) throw error
+
+      toast.success("Rezervacija je uspješno potvrđena! / Booking confirmed successfully!")
+      
+      // Refresh the page to show updated status
+      window.location.reload()
+    } catch (error) {
+      console.error("Error confirming booking:", error)
+      toast.error("Greška pri potvrdi rezervacije / Error confirming booking")
+    } finally {
+      setLoadingBookings(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(bookingId)
+        return newSet
+      })
+    }
+  }
+
+  const cancelBooking = async (bookingId: string) => {
+    setLoadingBookings(prev => new Set(prev).add(bookingId))
+    
+    try {
+      const { error } = await supabase
+        .from("bookings")
+        .update({ status: "cancelled" })
+        .eq("id", bookingId)
+
+      if (error) throw error
+
+      toast.success("Rezervacija je otkazana / Booking cancelled")
+      
+      // Refresh the page to show updated status
+      window.location.reload()
+    } catch (error) {
+      console.error("Error cancelling booking:", error)
+      toast.error("Greška pri otkazivanju rezervacije / Error cancelling booking")
+    } finally {
+      setLoadingBookings(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(bookingId)
+        return newSet
+      })
+    }
+  }
 
   const filteredBookings = bookings.filter((booking) => {
     const matchesSearch =
@@ -198,13 +257,23 @@ export function BookingsManagement({ bookings }: BookingsManagementProps) {
                             </Button>
                             {booking.status === "pending" && (
                               <>
-                                <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                                <Button 
+                                  size="sm" 
+                                  className="bg-green-600 hover:bg-green-700"
+                                  onClick={() => confirmBooking(booking.id)}
+                                  disabled={loadingBookings.has(booking.id)}
+                                >
                                   <Check className="mr-2 h-4 w-4" />
-                                  Potvrdi
+                                  {loadingBookings.has(booking.id) ? "Potvrđujem..." : "Potvrdi"}
                                 </Button>
-                                <Button variant="destructive" size="sm">
+                                <Button 
+                                  variant="destructive" 
+                                  size="sm"
+                                  onClick={() => cancelBooking(booking.id)}
+                                  disabled={loadingBookings.has(booking.id)}
+                                >
                                   <X className="mr-2 h-4 w-4" />
-                                  Otkaži
+                                  {loadingBookings.has(booking.id) ? "Otkazujem..." : "Otkaži"}
                                 </Button>
                               </>
                             )}

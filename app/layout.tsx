@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { I18nProvider } from "@/lib/i18n/context"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ html {
       </head>
       <body>
         <I18nProvider>{children}</I18nProvider>
+        <Toaster />
       </body>
     </html>
   )
