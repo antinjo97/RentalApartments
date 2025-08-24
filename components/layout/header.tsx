@@ -49,6 +49,10 @@ export function Header() {
               <Calendar className="mr-1 h-4 w-4 inline" />
               {t("bookings")}
             </Link>
+            <Link href="/recommendations" className="transition-colors hover:text-foreground/80 text-foreground/60">
+              <MapPin className="mr-1 h-4 w-4 inline" />
+              {t("recommendations")}
+            </Link>
             <Link href="/contact" className="transition-colors hover:text-foreground/80 text-foreground/60">
               {t("contact")}
             </Link>
@@ -107,6 +111,14 @@ export function Header() {
           >
             <Calendar className="mr-2 h-4 w-4 inline" />
             {t("bookings")}
+          </Link>
+          <Link 
+            href="/recommendations" 
+            className="block py-2 text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <MapPin className="mr-2 h-4 w-4 inline" />
+            {t("recommendations")}
           </Link>
           <Link 
             href="/contact" 

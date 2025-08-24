@@ -7,9 +7,8 @@ import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Apartmani Croatia - Croatian Apartment Rentals",
+  title: "Apartmani Hrvatska - Croatian Apartment Rentals",
   description: "Find and book beautiful apartments in Croatia. Discover Split, Dubrovnik, Pula, Zadar, and Rovinj.",
-  generator: "v0.app",
 }
 
 export default function RootLayout({
