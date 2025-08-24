@@ -50,7 +50,7 @@ export default function AdminBookingsPage() {
           .select(
             `
             *,
-            apartment:apartments(id, title, city, address)
+            apartment:apartments(id, title, city, address, images)
           `,
           )
           .order("created_at", { ascending: false })
@@ -66,6 +66,7 @@ export default function AdminBookingsPage() {
           console.error("Error fetching bookings:", fetchError)
           setError(fetchError.message)
         } else {
+          console.log("Bookings data:", bookingsData)
           // Transform bookings to include user object with guest information
           const transformedBookings = (bookingsData || []).map(booking => ({
             ...booking,

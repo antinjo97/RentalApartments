@@ -11,8 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useI18n } from "@/lib/i18n/context"
 
 export default function SignUpPage() {
+  const { t } = useI18n()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [repeatPassword, setRepeatPassword] = useState("")
@@ -30,13 +32,13 @@ export default function SignUpPage() {
     setError(null)
 
     if (password !== repeatPassword) {
-      setError("Lozinke se ne poklapaju / Passwords do not match")
+      setError(t("passwordsNotMatch"))
       setIsLoading(false)
       return
     }
 
     if (password.length < 6) {
-      setError("Lozinka mora imati najmanje 6 znakova / Password must be at least 6 characters")
+      setError(t("passwordTooShort"))
       setIsLoading(false)
       return
     }
@@ -69,15 +71,15 @@ export default function SignUpPage() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Registracija / Sign up</CardTitle>
-              <CardDescription>Stvorite novi račun / Create a new account</CardDescription>
+              <CardTitle className="text-2xl">{t("signupTitle")}</CardTitle>
+              <CardDescription>{t("signupDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSignUp}>
                 <div className="flex flex-col gap-6">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                      <Label htmlFor="firstName">Ime / First Name</Label>
+                      <Label htmlFor="firstName">{t("firstName")}</Label>
                       <Input
                         id="firstName"
                         type="text"
@@ -87,7 +89,7 @@ export default function SignUpPage() {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="lastName">Prezime / Last Name</Label>
+                      <Label htmlFor="lastName">{t("lastName")}</Label>
                       <Input
                         id="lastName"
                         type="text"
@@ -109,19 +111,19 @@ export default function SignUpPage() {
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="role">Tip korisnika / User Type</Label>
+                    <Label htmlFor="role">{t("userType")}</Label>
                     <Select value={role} onValueChange={(value: "user" | "admin") => setRole(value)}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Odaberite tip korisnika / Select user type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="user">Korisnik / User</SelectItem>
-                        <SelectItem value="admin">Administrator / Admin</SelectItem>
-                      </SelectContent>
+                                              <SelectValue placeholder={t("selectUserType")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">{t("user")}</SelectItem>
+                      <SelectItem value="admin">{t("admin")}</SelectItem>
+                    </SelectContent>
                     </Select>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="password">Lozinka / Password</Label>
+                    <Label htmlFor="password">{t("password")}</Label>
                     <Input
                       id="password"
                       type="password"
@@ -131,7 +133,7 @@ export default function SignUpPage() {
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="repeat-password">Ponovite lozinku / Repeat Password</Label>
+                    <Label htmlFor="repeat-password">{t("repeatPassword")}</Label>
                     <Input
                       id="repeat-password"
                       type="password"
@@ -142,18 +144,18 @@ export default function SignUpPage() {
                   </div>
                   {error && <p className="text-sm text-destructive">{error}</p>}
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Stvaranje računa... / Creating account..." : "Registriraj se / Sign up"}
+                    {isLoading ? t("loading") : t("signup")}
                   </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">
-                  Već imate račun? / Already have an account?{" "}
+                  {t("alreadyHaveAccount")}{" "}
                   <Link href="/auth/login" className="underline underline-offset-4">
-                    Prijavite se / Login
+                    {t("login")}
                   </Link>
                 </div>
                 <div className="mt-2 text-center text-sm">
                   <Link href="/" className="underline underline-offset-4">
-                    Povratak na početnu / Back to home
+                    {t("back")} {t("to")} {t("home")}
                   </Link>
                 </div>
               </form>

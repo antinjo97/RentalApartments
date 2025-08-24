@@ -5,15 +5,18 @@ import { UserNav } from "@/components/auth/user-nav"
 import { Settings, Home, Building, Calendar, MessageSquare, BarChart3 } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useI18n } from "@/lib/i18n/context"
+import { LanguageSwitcher } from "@/components/i18n/language-switcher"
 
 export function AdminHeader() {
   const pathname = usePathname()
+  const { t } = useI18n()
 
   const navigation = [
-    { name: "Pregled / Overview", href: "/admin", icon: BarChart3 },
-    { name: "Apartmani / Apartments", href: "/admin/apartments", icon: Building },
-    { name: "Rezervacije / Bookings", href: "/admin/bookings", icon: Calendar },
-    { name: "Poruke / Messages", href: "/admin/messages", icon: MessageSquare },
+    { name: t("overviewOverview"), href: "/admin", icon: BarChart3 },
+    { name: t("apartmentsApartments"), href: "/admin/apartments", icon: Building },
+    { name: t("bookingsBookings"), href: "/admin/bookings", icon: Calendar },
+    { name: t("messagesMessages"), href: "/admin/messages", icon: MessageSquare },
   ]
 
   return (
@@ -22,7 +25,7 @@ export function AdminHeader() {
         <div className="mr-4 flex">
           <Link href="/admin" className="mr-6 flex items-center space-x-2">
             <Settings className="h-6 w-6" />
-            <span className="hidden font-bold sm:inline-block">Admin Panel</span>
+            <span className="hidden font-bold sm:inline-block">{t("adminPanel")}</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navigation.map((item) => {
@@ -49,9 +52,12 @@ export function AdminHeader() {
             className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
           >
             <Home className="h-4 w-4" />
-            <span className="hidden sm:inline">Natrag na web / Back to site</span>
+            <span className="hidden sm:inline">{t("backToSite")}</span>
           </Link>
-          <UserNav />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <UserNav />
+          </div>
         </div>
       </div>
     </header>

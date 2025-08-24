@@ -1,5 +1,8 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building, Calendar, MessageSquare, TrendingUp, Users, Euro } from "lucide-react"
+import { useI18n } from "@/lib/i18n/context"
 
 interface AdminOverviewProps {
   apartments: Array<{ id: string; is_available: boolean }>
@@ -8,6 +11,8 @@ interface AdminOverviewProps {
 }
 
 export function AdminOverview({ apartments, bookings, messages }: AdminOverviewProps) {
+  const { t } = useI18n()
+  
   const totalApartments = apartments.length
   const availableApartments = apartments.filter((apt) => apt.is_available).length
   const totalBookings = bookings.length
@@ -26,53 +31,53 @@ export function AdminOverview({ apartments, bookings, messages }: AdminOverviewP
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Pregled sustava / System overview</p>
+        <h1 className="text-3xl font-bold mb-2">{t("adminDashboard")}</h1>
+        <p className="text-muted-foreground">{t("systemOverviewDesc")}</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Apartmani / Apartments</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("apartments")}</CardTitle>
             <Building className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalApartments}</div>
-            <p className="text-xs text-muted-foreground">{availableApartments} dostupno / available</p>
+            <p className="text-xs text-muted-foreground">{availableApartments} {t("available")}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rezervacije / Bookings</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("bookings")}</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalBookings}</div>
-            <p className="text-xs text-muted-foreground">{pendingBookings} na čekanju / pending</p>
+            <p className="text-xs text-muted-foreground">{pendingBookings} {t("pending")}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Prihod / Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("revenue")}</CardTitle>
             <Euro className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€{totalRevenue.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">{confirmedBookings} potvrđeno / confirmed</p>
+            <p className="text-xs text-muted-foreground">{confirmedBookings} {t("confirmed")}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Poruke / Messages</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("contact")}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{messages.length}</div>
-            <p className="text-xs text-muted-foreground">{unreadMessages} nepročitano / unread</p>
+            <p className="text-xs text-muted-foreground">{unreadMessages} {t("unread")}</p>
           </CardContent>
         </Card>
       </div>
@@ -83,21 +88,21 @@ export function AdminOverview({ apartments, bookings, messages }: AdminOverviewP
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
-              Nedavna aktivnost / Recent Activity
+              {t("recentActivity")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm">Nove rezervacije (7 dana)</span>
+                <span className="text-sm">{t("newBookings7Days")}</span>
                 <span className="font-medium">{recentBookings}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Rezervacije na čekanju</span>
+                <span className="text-sm">{t("pendingBookings")}</span>
                 <span className="font-medium text-orange-600">{pendingBookings}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Nepročitane poruke</span>
+                <span className="text-sm">{t("unreadMessages")}</span>
                 <span className="font-medium text-red-600">{unreadMessages}</span>
               </div>
             </div>
@@ -108,7 +113,7 @@ export function AdminOverview({ apartments, bookings, messages }: AdminOverviewP
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5" />
-              Brze akcije / Quick Actions
+              {t("quickActions")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -117,24 +122,24 @@ export function AdminOverview({ apartments, bookings, messages }: AdminOverviewP
                 href="/admin/bookings?status=pending"
                 className="block p-3 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors"
               >
-                <div className="font-medium text-orange-900">Provjeri rezervacije na čekanju</div>
-                <div className="text-sm text-orange-700">{pendingBookings} rezervacija čeka potvrdu</div>
+                <div className="font-medium text-orange-900">{t("checkPendingBookings")}</div>
+                <div className="text-sm text-orange-700">{pendingBookings} {t("pendingBookingsCount")}</div>
               </a>
               {unreadMessages > 0 && (
                 <a
                   href="/admin/messages?unread=true"
                   className="block p-3 rounded-lg bg-red-50 hover:bg-red-100 transition-colors"
                 >
-                  <div className="font-medium text-red-900">Odgovori na poruke</div>
-                  <div className="text-sm text-red-700">{unreadMessages} nepročitanih poruka</div>
+                  <div className="font-medium text-red-900">{t("replyToMessagesAction")}</div>
+                  <div className="text-sm text-red-700">{unreadMessages} {t("unreadMessages")}</div>
                 </a>
               )}
               <a
                 href="/admin/apartments"
                 className="block p-3 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
               >
-                <div className="font-medium text-blue-900">Upravljaj apartmanima</div>
-                <div className="text-sm text-blue-700">Dodaj, uredi ili ukloni apartmane</div>
+                <div className="font-medium text-blue-900">{t("manageApartments")}</div>
+                <div className="text-sm text-blue-700">{t("manageApartmentsDesc")}</div>
               </a>
             </div>
           </CardContent>

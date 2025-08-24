@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { MessageSquare } from "lucide-react"
 import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
+
 import { useI18n } from "@/lib/i18n/context"
 
 export function ContactForm() {
@@ -23,7 +23,7 @@ export function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const supabase = createClient()
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,15 +37,26 @@ export function ContactForm() {
     }
 
     try {
-      const { error: submitError } = await supabase.from("contact_messages").insert({
-        name: name.trim(),
-        email: email.trim(),
-        phone: phone.trim() || null,
-        subject: subject.trim() || null,
-        message: message.trim(),
+      // Send message via API endpoint
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim() || null,
+          subject: subject.trim() || null,
+          message: message.trim(),
+        }),
       })
 
-      if (submitError) throw submitError
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send message")
+      }
 
       setIsSubmitted(true)
       setName("")

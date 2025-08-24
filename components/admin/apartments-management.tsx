@@ -10,12 +10,14 @@ import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import { ApartmentForm } from "./apartment-form"
 import type { Apartment } from "@/lib/types"
+import { useI18n } from "@/lib/i18n/context"
 
 interface ApartmentsManagementProps {
   apartments: Apartment[]
 }
 
 export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) {
+  const { t } = useI18n()
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<"all" | "available" | "unavailable">("all")
   const [showForm, setShowForm] = useState(false)
@@ -33,9 +35,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
   }
 
   const handleDeleteApartment = async (apartmentId: string) => {
-    if (
-      !confirm("Jeste li sigurni da želite ukloniti ovaj apartman? / Are you sure you want to remove this apartment?")
-    ) {
+    if (!confirm(t("delete") + "?")) {
       return
     }
 
@@ -46,10 +46,10 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
       if (error) throw error
 
       setApartmentsList((prev) => prev.filter((apt) => apt.id !== apartmentId))
-      alert("Apartman je uspješno uklonjen / Apartment removed successfully")
+      alert(t("apartmentDeleted"))
     } catch (error) {
       console.error("Error deleting apartment:", error)
-      alert("Greška pri uklanjanju apartmana / Error removing apartment")
+      alert(t("errorDeletingApartment"))
     }
   }
 
@@ -68,7 +68,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
       )
     } catch (error) {
       console.error("Error updating apartment:", error)
-      alert("Greška pri ažuriranju apartmana / Error updating apartment")
+      alert(t("errorSavingApartment"))
     }
   }
 
@@ -94,14 +94,12 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Upravljanje apartmanima / Apartments Management</h1>
-          <p className="text-muted-foreground">
-            Dodaj, uredi i upravljaj apartmanima / Add, edit and manage apartments
-          </p>
+          <h1 className="text-3xl font-bold mb-2">{t("apartmentsManagementTitle")}</h1>
+          <p className="text-muted-foreground">{t("apartmentsManagementSubtitle")}</p>
         </div>
         <Button onClick={handleAddApartment}>
           <Plus className="mr-2 h-4 w-4" />
-          Dodaj apartman / Add Apartment
+          {t("addApartment")}
         </Button>
       </div>
 
@@ -113,7 +111,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Pretraži apartmane... / Search apartments..."
+                  placeholder={t("searchApartments")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -126,21 +124,21 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                 size="sm"
                 onClick={() => setStatusFilter("all")}
               >
-                Svi / All ({apartmentsList.length})
+                {t("allBookings")} ({apartmentsList.length})
               </Button>
               <Button
                 variant={statusFilter === "available" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("available")}
               >
-                Dostupni / Available ({apartmentsList.filter((a) => a.is_available).length})
+                {t("available")} ({apartmentsList.filter((a) => a.is_available).length})
               </Button>
               <Button
                 variant={statusFilter === "unavailable" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("unavailable")}
               >
-                Nedostupni / Unavailable ({apartmentsList.filter((a) => !a.is_available).length})
+                {t("unread")} ({apartmentsList.filter((a) => !a.is_available).length})
               </Button>
             </div>
           </div>
@@ -152,9 +150,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
         {filteredApartments.length === 0 ? (
           <Card>
             <CardContent className="p-12 text-center">
-              <p className="text-muted-foreground">
-                Nema apartmana koji odgovaraju filterima / No apartments match the filters
-              </p>
+              <p className="text-muted-foreground">{t("noApartments")}</p>
             </CardContent>
           </Card>
         ) : (
@@ -187,9 +183,9 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant={apartment.is_available ? "default" : "secondary"}>
-                          {apartment.is_available ? "Dostupan / Available" : "Nedostupan / Unavailable"}
+                          {apartment.is_available ? t("available") : t("unread")}
                         </Badge>
-                        <Badge variant="outline">€{apartment.price_per_night}/noć</Badge>
+                        <Badge variant="outline">€{apartment.price_per_night}/{t("night")}</Badge>
                       </div>
                     </div>
                   </CardHeader>
@@ -205,11 +201,11 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4" />
-                          <span>{apartment.max_guests} gostiju</span>
+                          <span>{apartment.max_guests} {t("guests")}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Bed className="h-4 w-4" />
-                          <span>{apartment.bedrooms} soba</span>
+                          <span>{apartment.bedrooms} {t("bedrooms")}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Bath className="h-4 w-4" />
@@ -235,11 +231,11 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                       <div className="flex gap-2 pt-2">
                         <Button variant="outline" size="sm" onClick={() => handleEditApartment(apartment)}>
                           <Edit className="mr-2 h-4 w-4" />
-                          Uredi / Edit
+                          {t("edit")}
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => handleDeleteApartment(apartment.id)}>
                           <Trash2 className="mr-2 h-4 w-4" />
-                          Ukloni / Remove
+                          {t("delete")}
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => handleToggleAvailability(apartment)}>
                           {apartment.is_available ? "Označi nedostupnim" : "Označi dostupnim"}

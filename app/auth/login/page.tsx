@@ -10,8 +10,10 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useI18n } from "@/lib/i18n/context"
 
 export default function LoginPage() {
+  const { t } = useI18n()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -44,8 +46,8 @@ export default function LoginPage() {
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Prijava / Login</CardTitle>
-              <CardDescription>Unesite vaše podatke za prijavu / Enter your login details</CardDescription>
+              <CardTitle className="text-2xl">{t("loginTitle")}</CardTitle>
+              <CardDescription>{t("loginDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleLogin}>
@@ -62,7 +64,7 @@ export default function LoginPage() {
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="password">Lozinka / Password</Label>
+                    <Label htmlFor="password">{t("password")}</Label>
                     <Input
                       id="password"
                       type="password"
@@ -73,18 +75,18 @@ export default function LoginPage() {
                   </div>
                   {error && <p className="text-sm text-destructive">{error}</p>}
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Prijavljivanje... / Logging in..." : "Prijavi se / Login"}
+                    {isLoading ? t("loading") : t("login")}
                   </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">
-                  Nemate račun? / Don&apos;t have an account?{" "}
+                  {t("dontHaveAccount")}{" "}
                   <Link href="/auth/sign-up" className="underline underline-offset-4">
-                    Registriraj se / Sign up
+                    {t("signup")}
                   </Link>
                 </div>
                 <div className="mt-2 text-center text-sm">
                   <Link href="/" className="underline underline-offset-4">
-                    Povratak na početnu / Back to home
+                    {t("back")} {t("to")} {t("home")}
                   </Link>
                 </div>
               </form>

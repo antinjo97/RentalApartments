@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { X, Plus } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
-import { useLanguage } from "@/lib/i18n/context"
+import { useI18n } from "@/lib/i18n/context"
 import type { Apartment } from "@/lib/types"
 
 interface ApartmentFormProps {
@@ -45,7 +45,7 @@ const AMENITIES_OPTIONS = [
 const CITIES = ["Split", "Dubrovnik", "Pula", "Zadar", "Rovinj", "Hvar", "Korčula", "Trogir"]
 
 export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormProps) {
-  const { t } = useLanguage()
+  const { t } = useI18n()
   const supabase = createClient()
 
   const [loading, setLoading] = useState(false)
@@ -95,7 +95,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
       onClose()
     } catch (error) {
       console.error("Error saving apartment:", error)
-      alert("Greška pri spremanju apartmana / Error saving apartment")
+      alert(t("errorSavingApartment"))
     } finally {
       setLoading(false)
     }
@@ -118,7 +118,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
   }
 
   const addImageUrl = () => {
-    const url = prompt("Unesite URL slike / Enter image URL:")
+    const url = prompt(t("enterImageUrl"))
     if (url && !imageUrls.includes(url)) {
       setImageUrls((prev) => [...prev, url])
     }
@@ -134,7 +134,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>
-              {apartment ? "Uredi apartman / Edit Apartment" : "Dodaj novi apartman / Add New Apartment"}
+              {apartment ? t("editApartment") : t("addApartment")}
             </CardTitle>
             <Button variant="ghost" size="sm" onClick={onClose}>
               <X className="h-4 w-4" />
@@ -147,7 +147,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
             {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">Naziv / Title *</Label>
+                <Label htmlFor="title">{t("apartmentTitle")} *</Label>
                 <Input
                   id="title"
                   value={formData.title}
@@ -157,7 +157,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
               </div>
 
               <div>
-                <Label htmlFor="city">Grad / City *</Label>
+                <Label htmlFor="city">{t("apartmentCity")} *</Label>
                 <select
                   id="city"
                   value={formData.city}
@@ -165,7 +165,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
                   className="w-full px-3 py-2 border border-input bg-background rounded-md"
                   required
                 >
-                  <option value="">Odaberite grad / Select city</option>
+                  <option value="">{t("selectCity")}</option>
                   {CITIES.map((city) => (
                     <option key={city} value={city}>
                       {city}
@@ -176,7 +176,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
             </div>
 
             <div>
-              <Label htmlFor="address">Adresa / Address *</Label>
+              <Label htmlFor="address">{t("apartmentAddress")} *</Label>
               <Input
                 id="address"
                 value={formData.address}
@@ -186,7 +186,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
             </div>
 
             <div>
-              <Label htmlFor="description">Opis / Description</Label>
+              <Label htmlFor="description">{t("apartmentDescription")}</Label>
               <Textarea
                 id="description"
                 value={formData.description}
@@ -198,7 +198,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
             {/* Pricing and Capacity */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <Label htmlFor="price">Cijena po noći / Price per night (€) *</Label>
+                <Label htmlFor="price">{t("apartmentPrice")} (€) *</Label>
                 <Input
                   id="price"
                   type="number"
@@ -210,7 +210,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
               </div>
 
               <div>
-                <Label htmlFor="guests">Max gostiju / Max guests *</Label>
+                <Label htmlFor="guests">{t("apartmentGuests")} *</Label>
                 <Input
                   id="guests"
                   type="number"
@@ -222,7 +222,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
               </div>
 
               <div>
-                <Label htmlFor="bedrooms">Spavaće sobe / Bedrooms *</Label>
+                <Label htmlFor="bedrooms">{t("apartmentBedrooms")} *</Label>
                 <Input
                   id="bedrooms"
                   type="number"
@@ -280,7 +280,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
                 checked={formData.is_available}
                 onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, is_available: checked }))}
               />
-              <Label htmlFor="available">Dostupan za rezervaciju / Available for booking</Label>
+              <Label htmlFor="available">{t("apartmentAvailable")}</Label>
             </div>
 
             {/* Amenities */}
@@ -320,7 +320,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
 
             {/* Images */}
             <div>
-              <Label>Slike / Images</Label>
+              <Label>{t("apartmentImage")}</Label>
               <div className="space-y-4">
                 <Button type="button" variant="outline" onClick={addImageUrl}>
                   <Plus className="mr-2 h-4 w-4" />
@@ -353,10 +353,10 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
             {/* Actions */}
             <div className="flex gap-4 pt-4">
               <Button type="submit" disabled={loading}>
-                {loading ? "Spremanje..." : apartment ? "Ažuriraj / Update" : "Stvori / Create"}
+                {loading ? t("loading") : apartment ? t("edit") : t("save")}
               </Button>
               <Button type="button" variant="outline" onClick={onClose}>
-                Odustani / Cancel
+                {t("cancel")}
               </Button>
             </div>
           </form>
