@@ -1,6 +1,7 @@
 "use client"
 
 import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
@@ -81,6 +82,8 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
+
+      <Footer />
     </div>
   )
 }

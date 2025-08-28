@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { ApartmentFilters } from "@/components/apartments/apartment-filters"
 import { ApartmentGrid } from "@/components/apartments/apartment-grid"
 import { ApartmentMap } from "@/components/apartments/apartment-map"
@@ -89,6 +90,7 @@ export default function ApartmentsPage() {
             ))}
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
@@ -103,6 +105,7 @@ export default function ApartmentsPage() {
             <p className="text-muted-foreground">{error}</p>
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
@@ -151,6 +154,8 @@ export default function ApartmentsPage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

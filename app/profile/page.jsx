@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Footer } from "@/components/layout/footer"
 
 export default function ProfilePage() {
   const { t } = useI18n()
@@ -150,6 +151,8 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
       </div>
+
+      <Footer />
     </div>
   )
 }

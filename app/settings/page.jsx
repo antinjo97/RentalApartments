@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { useI18n } from "@/lib/i18n/context"
 import { useRouter } from "next/navigation"
 import { LanguageSwitcher } from "@/components/i18n/language-switcher"
+import { Footer } from "@/components/layout/footer"
 
 export default function SettingsPage() {
   const { t } = useI18n()
@@ -111,6 +112,8 @@ export default function SettingsPage() {
           </Button>
         </CardContent>
       </Card>
+
+      <Footer />
     </div>
   )
 }

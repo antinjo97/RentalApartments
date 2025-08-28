@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Footer } from "@/components/layout/footer"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -20,7 +21,7 @@ export default function SignUpPage() {
   const [repeatPassword, setRepeatPassword] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [role, setRole] = useState<"user" | "admin">("user")
+  const [role, setRole] = useState<"user">("user")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -112,13 +113,12 @@ export default function SignUpPage() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="role">{t("userType")}</Label>
-                    <Select value={role} onValueChange={(value: "user" | "admin") => setRole(value)}>
+                                         <Select value={role} onValueChange={(value: "user") => setRole(value)}>
                       <SelectTrigger>
                                               <SelectValue placeholder={t("selectUserType")} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="user">{t("user")}</SelectItem>
-                      <SelectItem value="admin">{t("admin")}</SelectItem>
                     </SelectContent>
                     </Select>
                   </div>
@@ -163,6 +163,8 @@ export default function SignUpPage() {
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

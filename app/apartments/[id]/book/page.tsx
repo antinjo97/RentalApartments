@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { BookingForm } from "@/components/booking/booking-form"
 import { notFound, redirect } from "next/navigation"
 
@@ -41,6 +42,8 @@ export default async function BookApartmentPage({ params }: { params: Promise<{ 
     <div className="min-h-screen bg-background">
       <Header />
       <BookingForm apartment={apartment} existingBookings={existingBookings || []} user={user} />
+      
+      <Footer />
     </div>
   )
 }

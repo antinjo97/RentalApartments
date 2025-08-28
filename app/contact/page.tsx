@@ -1,6 +1,7 @@
 "use client"
 
 import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { ContactForm } from "@/components/contact/contact-form"
 import { useI18n } from "@/lib/i18n/context"
 
@@ -17,6 +18,8 @@ export default function ContactPage() {
         </div>
         <ContactForm />
       </div>
+
+      <Footer />
     </div>
   )
 }

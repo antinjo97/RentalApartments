@@ -4,13 +4,18 @@ import { MapPin, Utensils, Camera, Star } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useI18n } from "@/lib/i18n/context"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import Image from "next/image"
 
 export default function RecommendationsPage() {
   const { t } = useI18n()
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">{t("recommendationsTitle")}</h1>
         <p className="text-xl text-muted-foreground">
@@ -683,6 +688,9 @@ export default function RecommendationsPage() {
           {t("recommendationsFooter")}
         </p>
       </div>
+      </div>
+
+      <Footer />
     </div>
   )
 }

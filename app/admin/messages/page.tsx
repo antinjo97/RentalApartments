@@ -1,50 +1,68 @@
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
+"use client"
+
+import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 import { AdminHeader } from "@/components/admin/admin-header"
 import { MessagesManagement } from "@/components/admin/messages-management"
+import { Footer } from "@/components/layout/footer"
+import { useAdmin } from "@/hooks/use-admin"
 
-export default async function AdminMessagesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ unread?: string }>
-}) {
-  const supabase = await createClient()
+export default function AdminMessagesPage() {
+  const { isAdmin, isLoading } = useAdmin()
+  const [messages, setMessages] = useState([])
+  const [isDataLoading, setIsDataLoading] = useState(true)
+  const searchParams = useSearchParams()
 
-  // Check if user is authenticated and is admin
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  useEffect(() => {
+    async function fetchMessages() {
+      if (!isAdmin) return
+      
+      const supabase = createClient()
+      
+      try {
+        let query = supabase.from("contact_messages").select("*").order("created_at", { ascending: false })
 
-  if (!user) {
-    redirect("/auth/login")
+        const unread = searchParams.get("unread")
+        if (unread === "true") {
+          query = query.eq("is_read", false)
+        }
+
+        const { data, error } = await query
+
+        if (error) {
+          console.error("Error fetching messages:", error)
+        } else {
+          setMessages(data || [])
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error)
+      } finally {
+        setIsDataLoading(false)
+      }
+    }
+
+    fetchMessages()
+  }, [isAdmin, searchParams])
+
+  if (isLoading || isDataLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    )
   }
 
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
-
-  if (!profile?.is_admin) {
-    redirect("/")
-  }
-
-  // Await searchParams before using its properties
-  const params = await searchParams
-
-  // Get all contact messages
-  let query = supabase.from("contact_messages").select("*").order("created_at", { ascending: false })
-
-  if (params.unread === "true") {
-    query = query.eq("is_read", false)
-  }
-
-  const { data: messages, error } = await query
-
-  if (error) {
-    console.error("Error fetching messages:", error)
+  if (!isAdmin) {
+    return null
   }
 
   return (
     <div className="min-h-screen bg-background">
       <AdminHeader />
-      <MessagesManagement messages={messages || []} />
+      <MessagesManagement messages={messages} />
+      
+      <Footer />
     </div>
   )
 }

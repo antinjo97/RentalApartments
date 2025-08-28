@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Calendar, MapPin, Users } from "lucide-react"
@@ -155,6 +156,8 @@ export default async function BookingConfirmationPage({
           </Card>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

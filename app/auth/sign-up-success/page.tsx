@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Footer } from "@/components/layout/footer"
 import Link from "next/link"
 import { Mail } from "lucide-react"
 
@@ -27,6 +28,8 @@ export default function SignUpSuccessPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Footer />
     </div>
   )
 }

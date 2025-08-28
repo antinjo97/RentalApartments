@@ -332,6 +332,7 @@ export const translations = {
      trgMarsalaTita: "Trg Maršala Tita",
      trgMarsalaTitaDesc: "Glavni trg grada",
      recommendationsFooter: "Ove preporuke su temeljene na lokalnom znanju i iskustvu naših gostiju. Za najnovije informacije i rezervacije, kontaktirajte nas direktno.",
+    welcomeToCroatia: "Dobrodošli u Hrvatsku",
   },
   en: {
     // Navigation
@@ -665,6 +666,7 @@ export const translations = {
      trgMarsalaTita: "Marshal Tito Square",
      trgMarsalaTitaDesc: "Main city square",
      recommendationsFooter: "These recommendations are based on local knowledge and experience of our guests. For the latest information and reservations, contact us directly.",
+    welcomeToCroatia: "Welcome to Croatia",
   },
 } as const
 

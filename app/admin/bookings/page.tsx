@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { redirect } from "next/navigation"
 import { AdminHeader } from "@/components/admin/admin-header"
 import { BookingsManagement } from "@/components/admin/bookings-management"
+import { Footer } from "@/components/layout/footer"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useAdmin } from "@/hooks/use-admin"
 import type { Booking } from "@/lib/types"
 
 type BookingWithDetails = Booking & { 
@@ -15,34 +16,20 @@ type BookingWithDetails = Booking & {
 }
 
 export default function AdminBookingsPage() {
+  const { isAdmin, isLoading } = useAdmin()
   const [bookings, setBookings] = useState<BookingWithDetails[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
   const supabase = createClient()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    async function checkAuthAndFetchData() {
+    async function fetchBookings() {
+      if (!isAdmin) return
+      
       try {
         setLoading(true)
         setError(null)
-
-        // Check if user is authenticated
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) {
-          redirect("/auth/login")
-          return
-        }
-
-        // Check if user is admin
-        const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
-        if (!profile?.is_admin) {
-          redirect("/")
-          return
-        }
-
-        setIsAdmin(true)
 
         // Get all bookings with apartment details
         let query = supabase
@@ -85,10 +72,10 @@ export default function AdminBookingsPage() {
       }
     }
 
-    checkAuthAndFetchData()
-  }, [supabase, searchParams])
+    fetchBookings()
+  }, [isAdmin, searchParams])
 
-  if (loading) {
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen bg-background">
         <AdminHeader />
@@ -125,6 +112,8 @@ export default function AdminBookingsPage() {
     <div className="min-h-screen bg-background">
       <AdminHeader />
       <BookingsManagement bookings={bookings} />
+      
+      <Footer />
     </div>
   )
 }

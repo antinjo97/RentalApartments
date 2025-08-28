@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import { BookingsList } from "@/components/booking/bookings-list"
 import { redirect } from "next/navigation"
 
@@ -43,6 +44,8 @@ export default async function BookingsPage() {
 
         <BookingsList bookings={bookings || []} />
       </div>
+
+      <Footer />
     </div>
   )
 }
