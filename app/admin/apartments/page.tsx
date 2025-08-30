@@ -52,10 +52,13 @@ export default function AdminApartmentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <AdminHeader />
-      <ApartmentsManagement apartments={apartments} />
+      <div className="flex-1">
+        <ApartmentsManagement apartments={apartments} />
+      </div>
       
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

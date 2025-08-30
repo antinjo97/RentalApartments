@@ -53,10 +53,13 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <AdminHeader />
-      <AdminOverview apartments={apartments} bookings={bookings} messages={messages} />
+      <div className="flex-1">
+        <AdminOverview apartments={apartments} bookings={bookings} messages={messages} />
+      </div>
       
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

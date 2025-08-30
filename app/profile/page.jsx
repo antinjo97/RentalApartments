@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 
 export default function ProfilePage() {
@@ -91,67 +92,75 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
           <div className="text-center">{t("loading")}</div>
         </div>
+        <Footer />
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              {t("profile")}
-              {profile.is_admin && <Badge variant="secondary">{t("administrator")}</Badge>}
-            </CardTitle>
-            <CardDescription>{t("updateProfileInfo")}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      {/* Main content area */}
+      <div className="flex-1 container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                {t("profile")}
+                {profile.is_admin && <Badge variant="secondary">{t("administrator")}</Badge>}
+              </CardTitle>
+              <CardDescription>{t("updateProfileInfo")}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="first_name">{t("firstName")}</Label>
+                  <Input
+                    id="first_name"
+                    value={profile.first_name}
+                    onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="last_name">{t("lastName")}</Label>
+                  <Input
+                    id="last_name"
+                    value={profile.last_name}
+                    onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
+                  />
+                </div>
+              </div>
+
               <div>
-                <Label htmlFor="first_name">{t("firstName")}</Label>
+                <Label htmlFor="email">{t("email")}</Label>
+                <Input id="email" type="email" value={profile.email} disabled className="bg-gray-50" />
+                <p className="text-sm text-gray-500 mt-1">{t("emailCannotBeChanged")}</p>
+              </div>
+
+              <div>
+                <Label htmlFor="phone">{t("phone")}</Label>
                 <Input
-                  id="first_name"
-                  value={profile.first_name}
-                  onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
+                  id="phone"
+                  value={profile.phone}
+                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                 />
               </div>
-              <div>
-                <Label htmlFor="last_name">{t("lastName")}</Label>
-                <Input
-                  id="last_name"
-                  value={profile.last_name}
-                  onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
-                />
-              </div>
-            </div>
 
-            <div>
-              <Label htmlFor="email">{t("email")}</Label>
-              <Input id="email" type="email" value={profile.email} disabled className="bg-gray-50" />
-              <p className="text-sm text-gray-500 mt-1">{t("emailCannotBeChanged")}</p>
-            </div>
-
-            <div>
-              <Label htmlFor="phone">{t("phone")}</Label>
-              <Input
-                id="phone"
-                value={profile.phone}
-                onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-              />
-            </div>
-
-            <Button onClick={handleSave} disabled={saving} className="w-full">
-              {saving ? t("saving") : t("saveChanges")}
-            </Button>
-          </CardContent>
-        </Card>
+              <Button onClick={handleSave} disabled={saving} className="w-full">
+                {saving ? t("saving") : t("saveChanges")}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

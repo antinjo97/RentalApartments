@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -42,60 +43,66 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <div className="flex flex-col gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">{t("loginTitle")}</CardTitle>
-              <CardDescription>{t("loginDescription")}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin}>
-                <div className="flex flex-col gap-6">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      {/* Main content area */}
+      <div className="flex-1 flex items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <div className="flex flex-col gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t("loginTitle")}</CardTitle>
+                <CardDescription>{t("loginDescription")}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleLogin}>
+                  <div className="flex flex-col gap-6">
+                    <div className="grid gap-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="password">{t("password")}</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </div>
+                    {error && <p className="text-sm text-destructive">{error}</p>}
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? t("loading") : t("login")}
+                    </Button>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="password">{t("password")}</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                  <div className="mt-4 text-center text-sm">
+                    {t("dontHaveAccount")}{" "}
+                    <Link href="/auth/sign-up" className="underline underline-offset-4">
+                      {t("signup")}
+                    </Link>
                   </div>
-                  {error && <p className="text-sm text-destructive">{error}</p>}
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? t("loading") : t("login")}
-                  </Button>
-                </div>
-                <div className="mt-4 text-center text-sm">
-                  {t("dontHaveAccount")}{" "}
-                  <Link href="/auth/sign-up" className="underline underline-offset-4">
-                    {t("signup")}
-                  </Link>
-                </div>
-                <div className="mt-2 text-center text-sm">
-                  <Link href="/" className="underline underline-offset-4">
-                    {t("back")} {t("to")} {t("home")}
-                  </Link>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                  <div className="mt-2 text-center text-sm">
+                    <Link href="/" className="underline underline-offset-4">
+                      {t("back")} {t("to")} {t("home")}
+                    </Link>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
 
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

@@ -77,29 +77,31 @@ export default function AdminBookingsPage() {
 
   if (isLoading || loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen flex flex-col">
         <AdminHeader />
-        <div className="container mx-auto px-4 py-8">
+        <div className="flex-1 container mx-auto px-4 py-8">
           <div className="space-y-4">
             {[...Array(6)].map((_, i) => (
               <Skeleton key={i} className="h-32 w-full" />
             ))}
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen flex flex-col">
         <AdminHeader />
-        <div className="container mx-auto px-4 py-8">
+        <div className="flex-1 container mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-red-600 mb-4">Error loading bookings</h1>
             <p className="text-muted-foreground">{error}</p>
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
@@ -109,10 +111,13 @@ export default function AdminBookingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <AdminHeader />
-      <BookingsManagement bookings={bookings} />
+      <div className="flex-1">
+        <BookingsManagement bookings={bookings} />
+      </div>
       
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

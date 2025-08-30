@@ -33,10 +33,11 @@ export default async function BookingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <Header />
 
-      <div className="container mx-auto px-4 py-8">
+      {/* Main content area */}
+      <div className="flex-1 container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Moje rezervacije / My Bookings</h1>
           <p className="text-muted-foreground">Pregled svih vaših rezervacija / Overview of all your bookings</p>
@@ -45,6 +46,7 @@ export default async function BookingsPage() {
         <BookingsList bookings={bookings || []} />
       </div>
 
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

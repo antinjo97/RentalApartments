@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { useI18n } from "@/lib/i18n/context"
 import { useRouter } from "next/navigation"
 import { LanguageSwitcher } from "@/components/i18n/language-switcher"
+import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 
 export default function SettingsPage() {
@@ -68,51 +69,65 @@ export default function SettingsPage() {
   }
 
   if (loading) {
-    return <div className="container mx-auto py-8">Loading...</div>
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">Loading...</div>
+        </div>
+        <Footer />
+      </div>
+    )
   }
 
   return (
-    <div className="container mx-auto py-8 max-w-2xl space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Jezik / Language</CardTitle>
-          <CardDescription>Odaberite jezik / Choose your language</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <LanguageSwitcher />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      {/* Main content area */}
+      <div className="flex-1 container mx-auto py-8 max-w-2xl space-y-6 px-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Jezik / Language</CardTitle>
+            <CardDescription>Odaberite jezik / Choose your language</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LanguageSwitcher />
+          </CardContent>
+        </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Promjena lozinke / Change Password</CardTitle>
-          <CardDescription>Ažurirajte svoju lozinku / Update your password</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="new_password">Nova lozinka / New Password</Label>
-            <Input
-              id="new_password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="confirm_password">Potvrdi lozinku / Confirm Password</Label>
-            <Input
-              id="confirm_password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
-          <Button onClick={handlePasswordUpdate} disabled={updating}>
-            {updating ? "Ažuriranje..." : "Ažuriraj lozinku / Update Password"}
-          </Button>
-        </CardContent>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Promjena lozinke / Change Password</CardTitle>
+            <CardDescription>Ažurirajte svoju lozinku / Update your password</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="new_password">Nova lozinka / New Password</Label>
+              <Input
+                id="new_password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="confirm_password">Potvrdi lozinku / Confirm Password</Label>
+              <Input
+                id="confirm_password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+            <Button onClick={handlePasswordUpdate} disabled={updating}>
+              {updating ? "Ažuriranje..." : "Ažuriraj lozinku / Update Password"}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

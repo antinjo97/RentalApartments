@@ -47,8 +47,12 @@ export default function AdminMessagesPage() {
 
   if (isLoading || isDataLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+      <div className="min-h-screen flex flex-col">
+        <AdminHeader />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-lg">Loading...</div>
+        </div>
+        <Footer />
       </div>
     )
   }
@@ -58,10 +62,13 @@ export default function AdminMessagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <AdminHeader />
-      <MessagesManagement messages={messages} />
+      <div className="flex-1">
+        <MessagesManagement messages={messages} />
+      </div>
       
+      {/* Footer at the bottom */}
       <Footer />
     </div>
   )

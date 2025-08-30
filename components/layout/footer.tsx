@@ -13,7 +13,7 @@ export function Footer() {
           {/* Left Side - Copyright and Location */}
           <div className="text-center md:text-left">
             <p className="text-slate-700 text-sm font-medium">
-              Copyright © 2015 Rental Apartments | Poreč, Istra, Hrvatska
+              Copyright © 2025 Rental Apartments | Poreč, Istra, Hrvatska
             </p>
             <p className="text-slate-600 text-xs mt-1">
               {t("welcomeToCroatia")}
@@ -23,7 +23,7 @@ export function Footer() {
           {/* Right Side - Credits */}
           <div className="text-center md:text-right">
             <p className="text-slate-700 text-sm font-medium">
-              made by A.Š. | Last modified on 2025
+              made by A.Š. | Last modified on August 2025
             </p>
           </div>
         </div>
