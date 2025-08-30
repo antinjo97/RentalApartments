@@ -42,7 +42,7 @@ const AMENITIES_OPTIONS = [
   "pets_allowed",
 ]
 
-const CITIES = ["Split", "Dubrovnik", "Pula", "Zadar", "Rovinj", "Hvar", "Korčula", "Trogir"]
+const CITIES = ["Umag", "Novigrad", "Poreč", "Rovinj", "Pula", "Rijeka", "Krk", "Cres", "Pag", "Zadar"]
 
 export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormProps) {
   const { t } = useI18n()

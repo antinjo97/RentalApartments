@@ -45,7 +45,9 @@ export default function HomePage() {
                 <CardTitle>{t("primeLocations")}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>{t("primeLocationsDesc")}</CardDescription>
+                <CardDescription>
+                  Apartmani u srcu najljepših hrvatskih gradova - Umag, Novigrad, Poreč, Rovinj, Pula, Rijeka, Krk, Cres, Pag i Zadar.
+                </CardDescription>
               </CardContent>
             </Card>
 

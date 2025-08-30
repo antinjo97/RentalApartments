@@ -176,22 +176,10 @@ export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
                 <Separator />
 
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>€{apartment.price_per_night} x 5 noći</span>
-                    <span>€{apartment.price_per_night * 5}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Naknada za čišćenje / Cleaning fee</span>
-                    <span>€25</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Naknada za uslugu / Service fee</span>
-                    <span>€15</span>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between font-semibold">
-                    <span>Ukupno / Total</span>
-                    <span>€{apartment.price_per_night * 5 + 40}</span>
+                  <div className="text-center text-muted-foreground">
+                    Odaberite datume za detaljnu kalkulaciju
+                    <br />
+                    Select dates for detailed calculation
                   </div>
                 </div>
               </CardContent>

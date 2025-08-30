@@ -76,11 +76,16 @@ export function ApartmentFilters() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t("allCities")}</SelectItem>
-                <SelectItem value="Split">Split</SelectItem>
-                <SelectItem value="Dubrovnik">Dubrovnik</SelectItem>
-                <SelectItem value="Pula">Pula</SelectItem>
-                <SelectItem value="Zadar">Zadar</SelectItem>
+                <SelectItem value="Umag">Umag</SelectItem>
+                <SelectItem value="Novigrad">Novigrad</SelectItem>
+                <SelectItem value="Poreč">Poreč</SelectItem>
                 <SelectItem value="Rovinj">Rovinj</SelectItem>
+                <SelectItem value="Pula">Pula</SelectItem>
+                <SelectItem value="Rijeka">Rijeka</SelectItem>
+                <SelectItem value="Krk">Krk</SelectItem>
+                <SelectItem value="Cres">Cres</SelectItem>
+                <SelectItem value="Pag">Pag</SelectItem>
+                <SelectItem value="Zadar">Zadar</SelectItem>
               </SelectContent>
             </Select>
           </div>
