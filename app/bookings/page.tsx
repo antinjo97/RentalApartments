@@ -37,9 +37,9 @@ export default async function BookingsPage() {
       <Header />
 
       {/* Main content area */}
-      <div className="flex-1 container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Moje rezervacije / My Bookings</h1>
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Moje rezervacije / My Bookings</h1>
           <p className="text-muted-foreground">Pregled svih vaših rezervacija / Overview of all your bookings</p>
         </div>
 

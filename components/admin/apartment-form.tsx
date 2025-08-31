@@ -234,7 +234,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
               </div>
 
               <div>
-                <Label htmlFor="bathrooms">Kupaonice / Bathrooms *</Label>
+                <Label htmlFor="bathrooms">{t("apartmentBathrooms")} *</Label>
                 <Input
                   id="bathrooms"
                   type="number"
@@ -285,7 +285,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
 
             {/* Amenities */}
             <div>
-              <Label>Sadržaji / Amenities</Label>
+              <Label>{t("apartmentAmenities")}</Label>
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   {AMENITIES_OPTIONS.map((amenity) => (
@@ -324,7 +324,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
               <div className="space-y-4">
                 <Button type="button" variant="outline" onClick={addImageUrl}>
                   <Plus className="mr-2 h-4 w-4" />
-                  Dodaj sliku / Add Image
+                  {t("addImage")}
                 </Button>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

@@ -27,47 +27,67 @@ export function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 flex h-14 items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Left side - Logo and Navigation */}
-        <div className="flex items-center space-x-6">
-          <Link href="/" className="flex items-center space-x-2">
-            <Home className="h-6 w-6" />
-            <span className="hidden font-bold sm:inline-block">Rental Apartments</span>
+        <div className="flex items-center space-x-8">
+          <Link href="/" className="flex items-center space-x-3 group">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg group-hover:shadow-xl transition-all duration-300">
+              <Home className="h-6 w-6" />
+            </div>
+            <span className="hidden font-bold text-xl text-foreground sm:inline-block bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Rental Apartments
+            </span>
           </Link>
           
           {/* Desktop Navigation - Hidden on mobile, visible on md+ */}
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            <Link href="/" className="transition-colors hover:text-foreground/80 text-foreground/60">
-              {t("home")}
+          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+            <Link 
+              href="/" 
+              className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-primary hover:bg-primary/10 group"
+            >
+              <span className="relative z-10">{t("home")}</span>
+              <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
-            <Link href="/apartments" className="transition-colors hover:text-foreground/80 text-foreground/60">
-              <MapPin className="mr-1 h-4 w-4 inline" />
-              {t("apartments")}
+            <Link 
+              href="/apartments" 
+              className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-primary hover:bg-primary/10 group flex items-center gap-2"
+            >
+              <MapPin className="h-4 w-4" />
+              <span className="relative z-10">{t("apartments")}</span>
+              <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
-            <Link href="/bookings" className="transition-colors hover:text-foreground/80 text-foreground/60">
-              <Calendar className="mr-1 h-4 w-4 inline" />
-              {t("bookings")}
+            <Link 
+              href="/bookings" 
+              className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-primary hover:bg-primary/10 group flex items-center gap-2"
+            >
+              <Calendar className="h-4 w-4" />
+              <span className="relative z-10">{t("bookings")}</span>
+              <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
-            <Link href="/contact" className="transition-colors hover:text-foreground/80 text-foreground/60">
-              {t("contact")}
+            <Link 
+              href="/contact" 
+              className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-primary hover:bg-primary/10 group"
+            >
+              <span className="relative z-10">{t("contact")}</span>
+              <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
           </nav>
         </div>
 
         {/* Right side - Language switcher, user nav, and mobile menu button */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <LanguageSwitcher />
           <UserNav />
           
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-all duration-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5 text-primary" />
             ) : (
               <Menu className="h-5 w-5" />
             )}
@@ -77,40 +97,40 @@ export function Header() {
 
       {/* Mobile Navigation Menu */}
       <div 
-        className={`md:hidden border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ease-in-out ${
+        className={`md:hidden border-t border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ease-in-out ${
           isMobileMenuOpen 
             ? 'max-h-96 opacity-100' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}
         ref={mobileMenuRef}
       >
-        <nav className="container mx-auto px-4 py-4 space-y-3">
+        <nav className="container mx-auto px-4 py-6 space-y-2">
           <Link 
             href="/" 
-            className="block py-2 text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+            className="block py-3 px-4 text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-primary/10 rounded-lg text-foreground/70 hover:text-foreground"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("home")}
           </Link>
           <Link 
             href="/apartments" 
-            className="block py-2 text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+            className="block py-3 px-4 text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-primary/10 rounded-lg text-foreground/70 hover:text-foreground flex items-center gap-3"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <MapPin className="mr-2 h-4 w-4 inline" />
+            <MapPin className="h-4 w-4" />
             {t("apartments")}
           </Link>
           <Link 
             href="/bookings" 
-            className="block py-2 text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+            className="block py-3 px-4 text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-primary/10 rounded-lg text-foreground/70 hover:text-foreground flex items-center gap-3"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Calendar className="mr-2 h-4 w-4 inline" />
+            <Calendar className="h-4 w-4" />
             {t("bookings")}
           </Link>
           <Link 
             href="/contact" 
-            className="block py-2 text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+            className="block py-3 px-4 text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-primary/10 rounded-lg text-foreground/70 hover:text-foreground"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t("contact")}

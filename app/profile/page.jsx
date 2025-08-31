@@ -107,18 +107,18 @@ export default function ProfilePage() {
       <Header />
       
       {/* Main content area */}
-      <div className="flex-1 container mx-auto px-4 py-8">
+      <div className="flex-1 container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                 {t("profile")}
                 {profile.is_admin && <Badge variant="secondary">{t("administrator")}</Badge>}
               </CardTitle>
               <CardDescription>{t("updateProfileInfo")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="first_name">{t("firstName")}</Label>
                   <Input

@@ -15,22 +15,22 @@ export default function RecommendationsPage() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Preporuke za putovanja</h1>
-          <p className="text-xl text-muted-foreground">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Preporuke za putovanja</h1>
+          <p className="text-lg sm:text-xl text-muted-foreground px-4">
             Otkrijte najbolje restorane, atrakcije i zanimljiva mjesta u našim gradovima
           </p>
         </div>
 
         {/* Umag */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Umag</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Umag</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -106,13 +106,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Novigrad */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Novigrad</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Novigrad</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -188,13 +188,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Poreč */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Poreč</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Poreč</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -270,13 +270,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Rovinj */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Rovinj</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Rovinj</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -352,13 +352,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Pula */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Pula</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Pula</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -434,13 +434,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Rijeka */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Rijeka</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Rijeka</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -516,13 +516,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Krk */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Krk</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Krk</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -598,13 +598,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Cres */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Cres</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Cres</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -680,13 +680,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Pag */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Pag</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-bold">Pag</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>
@@ -762,13 +762,13 @@ export default function RecommendationsPage() {
         </section>
 
         {/* Zadar */}
-        <section className="mb-16">
-          <div className="flex items-center gap-3 mb-8">
-            <MapPin className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold">Zadar</h2>
+        <section className="mb-12 sm:mb-16">
+          <div className="flex items-center gap-3 mb-6 sm:mb-8">
+            <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <div className="text-2xl sm:text-3xl font-bold">Zadar</div>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Restaurants */}
             <Card>
               <CardHeader>

@@ -11,9 +11,9 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{t("contact")}</h1>
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t("contact")}</h1>
           <p className="text-muted-foreground">{t("contactUs")}</p>
         </div>
         <ContactForm />

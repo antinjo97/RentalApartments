@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { User, LogOut, Settings, Calendar, Shield, LogIn } from "lucide-react"
+import { User, LogOut, Settings, Calendar, Shield, LogIn, Crown } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useI18n } from "@/lib/i18n/context"
 import { useEffect, useState } from "react"
@@ -59,9 +59,9 @@ export function UserNav() {
 
   if (loading) {
     return (
-      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-        <Avatar className="h-8 w-8">
-          <AvatarFallback>...</AvatarFallback>
+      <Button variant="ghost" className="relative h-10 w-10 rounded-xl hover:bg-primary/10 transition-all duration-300">
+        <Avatar className="h-10 w-10">
+          <AvatarFallback className="bg-primary/20 text-primary font-semibold">...</AvatarFallback>
         </Avatar>
       </Button>
     )
@@ -70,7 +70,12 @@ export function UserNav() {
   // Show login button if user is not authenticated
   if (!isAuthenticated || !profile) {
     return (
-      <Button onClick={() => router.push("/auth/login")} variant="outline" size="sm">
+      <Button 
+        onClick={() => router.push("/auth/login")} 
+        variant="outline" 
+        size="sm"
+        className="h-10 px-4 rounded-xl border-2 border-primary/30 hover:bg-primary/10 hover:border-primary/60 transition-all duration-300 shadow-md hover:shadow-lg"
+      >
         <LogIn className="mr-2 h-4 w-4" />
         {t("login")}
       </Button>
@@ -83,50 +88,77 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback>{initials}</AvatarFallback>
+        <Button variant="ghost" className="relative h-10 w-10 rounded-xl hover:bg-primary/10 transition-all duration-300 group">
+          <Avatar className="h-10 w-10 group-hover:scale-110 transition-transform duration-300">
+            <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white font-bold text-lg">
+              {initials}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{displayName}</p>
-            {profile.is_admin && (
-              <p className="text-xs leading-none text-orange-600 font-medium">Administrator</p>
-            )}
+      <DropdownMenuContent className="w-64 rounded-2xl border-2 border-primary/20 shadow-2xl backdrop-blur-sm" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal p-4">
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg">
+                <User className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-base font-semibold leading-none text-foreground">{displayName}</p>
+                {profile.is_admin && (
+                  <div className="flex items-center gap-1 mt-1">
+                    <Crown className="h-3 w-3 text-yellow-500" />
+                    <p className="text-xs leading-none text-yellow-600 font-bold">Administrator</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-primary/20" />
         {profile.is_admin && (
           <>
-            <DropdownMenuItem onClick={() => router.push("/admin")}>
-              <Shield className="mr-2 h-4 w-4" />
-              <span>Admin Dashboard</span>
+            <DropdownMenuItem 
+              onClick={() => router.push("/admin")}
+              className="p-4 text-base font-medium hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/20 hover:text-primary transition-all duration-300"
+            >
+              <Shield className="mr-3 h-5 w-5" />
+              <span className="font-semibold">Admin Dashboard</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-primary/20" />
           </>
         )}
-        <DropdownMenuItem onClick={() => router.push("/profile")}>
-          <User className="mr-2 h-4 w-4" />
-          <span>{t("profile")}</span>
+        <DropdownMenuItem 
+          onClick={() => router.push("/profile")}
+          className="p-4 text-base font-medium hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/20 hover:text-primary transition-all duration-300"
+        >
+          <User className="mr-3 h-5 w-5" />
+          <span className="font-semibold">{t("profile")}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push("/bookings")}>
-          <Calendar className="mr-2 h-4 w-4" />
-          <span>{t("myBookings")}</span>
+        <DropdownMenuItem 
+          onClick={() => router.push("/bookings")}
+          className="p-4 text-base font-medium hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/20 hover:text-primary transition-all duration-300"
+        >
+          <Calendar className="mr-3 h-5 w-5" />
+          <span className="font-semibold">{t("myBookings")}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push("/settings")}>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>{t("settings")}</span>
+        <DropdownMenuItem 
+          onClick={() => router.push("/settings")}
+          className="p-4 text-base font-medium hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/20 hover:text-primary transition-all duration-300"
+        >
+          <Settings className="mr-3 h-5 w-5" />
+          <span className="font-semibold">{t("settings")}</span>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={async () => {
-          await supabase.auth.signOut()
-          router.push("/auth/login")
-        }}>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>{t("logout")}</span>
+        <DropdownMenuSeparator className="bg-primary/20" />
+        <DropdownMenuItem 
+          onClick={async () => {
+            await supabase.auth.signOut()
+            router.push("/auth/login")
+          }}
+          className="p-4 text-base font-medium hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/20 hover:text-red-600 transition-all duration-300"
+        >
+          <LogOut className="mr-3 h-5 w-5" />
+          <span className="font-semibold">{t("logout")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

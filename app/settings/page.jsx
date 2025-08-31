@@ -85,7 +85,7 @@ export default function SettingsPage() {
       <Header />
       
       {/* Main content area */}
-      <div className="flex-1 container mx-auto py-8 max-w-2xl space-y-6 px-4">
+      <div className="flex-1 container mx-auto py-6 sm:py-8 max-w-2xl space-y-4 sm:space-y-6 px-4">
         <Card>
           <CardHeader>
             <CardTitle>Jezik / Language</CardTitle>

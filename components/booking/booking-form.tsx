@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CalendarIcon, ArrowLeft, Users, CreditCard } from "lucide-react"
+import { CalendarIcon, ArrowLeft, Users, CreditCard, MapPin } from "lucide-react"
 import { format, differenceInDays, addDays, isBefore } from "date-fns"
 import { hr } from "date-fns/locale"
 import Link from "next/link"
@@ -255,15 +255,19 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
                   </div>
                 </div>
 
-                {error && <p className="text-sm text-destructive">{error}</p>}
+                {error && (
+                  <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20">
+                    <p className="text-sm text-destructive font-medium">{error}</p>
+                  </div>
+                )}
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full"
+                  className="w-full shadow-xl hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300"
                   disabled={isLoading || !checkInDate || !checkOutDate}
                 >
-                  <CreditCard className="mr-2 h-4 w-4" />
+                  <CreditCard className="mr-3 h-5 w-5" />
                   {isLoading ? t("loading") : t("confirmBooking")}
                 </Button>
               </form>
@@ -274,34 +278,39 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
         {/* Booking Summary */}
         <div className="space-y-6">
           {/* Apartment Summary */}
-          <Card>
+          <Card className="border-primary/20">
             <CardHeader>
-              <CardTitle className="text-lg">{apartment.title}</CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <CardTitle className="text-xl text-foreground flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                {apartment.title}
+              </CardTitle>
+              <p className="text-base text-muted-foreground font-medium">
                 {apartment.address}, {apartment.city}
               </p>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span>{t("pricePerNight")}</span>
-                  <span>€{apartment.price_per_night}</span>
+              <div className="space-y-4 text-base">
+                <div className="flex justify-between items-center py-2 px-3 rounded-lg bg-primary/5">
+                  <span className="font-medium">{t("pricePerNight")}</span>
+                  <span className="font-bold text-primary text-lg">€{apartment.price_per_night}</span>
                 </div>
                 {checkInDate && checkOutDate && (
                   <>
-                    <div className="flex justify-between">
-                      <span>{t("dates")}</span>
-                      <span>
+                    <div className="flex justify-between items-center py-2 px-3 rounded-lg bg-secondary/5">
+                      <span className="font-medium">{t("dates")}</span>
+                      <span className="font-semibold">
                         {format(checkInDate, "dd.MM")} - {format(checkOutDate, "dd.MM")}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>{t("numberOfNights")}</span>
-                      <span>{nights}</span>
+                    <div className="flex justify-between items-center py-2 px-3 rounded-lg bg-primary/5">
+                      <span className="font-medium">{t("numberOfNights")}</span>
+                      <span className="font-bold text-primary">{nights}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>{t("numberOfGuests")}</span>
-                      <span>{guests}</span>
+                    <div className="flex justify-between items-center py-2 px-3 rounded-lg bg-secondary/5">
+                      <span className="font-medium">{t("numberOfGuests")}</span>
+                      <span className="font-semibold">{guests}</span>
                     </div>
                   </>
                 )}
@@ -311,30 +320,35 @@ export function BookingForm({ apartment, existingBookings, user }: BookingFormPr
 
           {/* Price Breakdown */}
           {checkInDate && checkOutDate && nights > 0 && (
-            <Card>
+            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
               <CardHeader>
-                <CardTitle className="text-lg">{t("priceBreakdown")}</CardTitle>
+                <CardTitle className="text-xl text-foreground flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg">
+                    <CreditCard className="h-5 w-5" />
+                  </div>
+                  {t("priceBreakdown")}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span>
+                <div className="space-y-4 text-base">
+                  <div className="flex justify-between items-center py-3 px-4 rounded-xl bg-white/50 shadow-sm">
+                    <span className="font-medium">
                       €{apartment.price_per_night} x {nights} {nights === 1 ? t("night") : t("nights")}
                     </span>
-                    <span>€{subtotal}</span>
+                    <span className="font-bold text-lg">€{subtotal}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>{t("cleaningFee")}</span>
-                    <span>€{cleaningFee}</span>
+                  <div className="flex justify-between items-center py-3 px-4 rounded-xl bg-white/50 shadow-sm">
+                    <span className="font-medium">{t("cleaningFee")}</span>
+                    <span className="font-semibold">€{cleaningFee}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>{t("serviceFee")}</span>
-                    <span>€{serviceFee}</span>
+                  <div className="flex justify-between items-center py-3 px-4 rounded-xl bg-white/50 shadow-sm">
+                    <span className="font-medium">{t("serviceFee")}</span>
+                    <span className="font-semibold">€{serviceFee}</span>
                   </div>
-                  <Separator />
-                  <div className="flex justify-between font-semibold text-base">
-                    <span>{t("total")}</span>
-                    <span>€{total}</span>
+                  <Separator className="bg-primary/20" />
+                  <div className="flex justify-between items-center py-4 px-4 rounded-xl bg-gradient-to-r from-primary/10 to-primary/20 border-2 border-primary/30">
+                    <span className="font-bold text-lg text-foreground">{t("total")}</span>
+                    <span className="font-bold text-2xl text-primary">€{total}</span>
                   </div>
                 </div>
               </CardContent>

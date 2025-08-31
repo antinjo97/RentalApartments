@@ -34,6 +34,7 @@ export default function ApartmentsPage() {
         let query = supabase.from("apartments").select("*").eq("is_available", true)
         
         // Apply filters based on search parameters
+        const search = searchParams.get("search")
         const city = searchParams.get("city")
         const minPrice = searchParams.get("minPrice")
         const maxPrice = searchParams.get("maxPrice")
@@ -58,6 +59,12 @@ export default function ApartmentsPage() {
         
         if (bedrooms && bedrooms !== "any") {
           query = query.gte("bedrooms", Number.parseInt(bedrooms))
+        }
+        
+        // Apply search filter across multiple fields
+        if (search && search.trim() !== "") {
+          const searchTerm = search.trim()
+          query = query.or(`city.ilike.%${searchTerm}%,title.ilike.%${searchTerm}%,address.ilike.%${searchTerm}%`)
         }
         
         const { data, error: fetchError } = await query.order("created_at", { ascending: false })
@@ -138,7 +145,7 @@ export default function ApartmentsPage() {
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Apartment Grid */}
-          <div className="space-y-6">
+          <div className="space-y-6 order-2 lg:order-1">
             <ApartmentGrid 
               apartments={apartments} 
               onApartmentSelect={handleApartmentSelect}
@@ -146,7 +153,7 @@ export default function ApartmentsPage() {
           </div>
 
           {/* Map */}
-          <div className="lg:sticky lg:top-24 h-[600px]">
+          <div className="order-1 lg:order-2 lg:sticky lg:top-24 h-[400px] lg:h-[600px] mb-6 lg:mb-0">
             <ApartmentMap 
               apartments={apartments} 
               selectedApartment={selectedApartment}

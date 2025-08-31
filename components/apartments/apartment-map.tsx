@@ -14,10 +14,11 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
   const mapInstanceRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<google.maps.Marker[]>([])
 
+  // Initialize map when component mounts
   useEffect(() => {
     if (!mapRef.current || !window.google) return
 
-    // Initialize map
+    // Initialize map immediately
     const map = new window.google.maps.Map(mapRef.current, {
       zoom: 7,
       center: { lat: 44.5, lng: 16.0 }, // Center of Croatia
@@ -36,6 +37,11 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
     })
 
     mapInstanceRef.current = map
+  }, []) // Empty dependency array - run only once when component mounts
+
+  // Separate effect for updating markers when apartments change
+  useEffect(() => {
+    if (!mapInstanceRef.current || !apartments.length) return
 
     // Clear previous markers
     markersRef.current.forEach(marker => marker.setMap(null))
@@ -48,7 +54,7 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
         
         const marker = new window.google.maps.Marker({
           position: { lat: apartment.latitude, lng: apartment.longitude },
-          map,
+          map: mapInstanceRef.current!,
           title: apartment.title,
           icon: {
             url:
@@ -75,7 +81,7 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
         })
 
         marker.addListener("click", () => {
-          infoWindow.open(map, marker)
+          infoWindow.open(mapInstanceRef.current!, marker)
         })
 
         // Store marker reference
@@ -91,13 +97,13 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
           bounds.extend({ lat: apartment.latitude, lng: apartment.longitude })
         }
       })
-      map.fitBounds(bounds)
+      mapInstanceRef.current!.fitBounds(bounds)
     }
 
     // If there's a selected apartment, center the map on it
     if (selectedApartment && selectedApartment.latitude && selectedApartment.longitude) {
-      map.setCenter({ lat: selectedApartment.latitude, lng: selectedApartment.longitude })
-      map.setZoom(15) // Zoom in closer for selected apartment
+      mapInstanceRef.current!.setCenter({ lat: selectedApartment.latitude, lng: selectedApartment.longitude })
+      mapInstanceRef.current!.setZoom(15) // Zoom in closer for selected apartment
     }
   }, [apartments, selectedApartment])
 
@@ -131,11 +137,6 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
   return (
     <div className="h-full w-full rounded-lg overflow-hidden border">
       <div ref={mapRef} className="h-full w-full" />
-      <script
-        async
-        defer
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-      />
     </div>
   )
 }

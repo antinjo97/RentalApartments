@@ -20,7 +20,7 @@ export function ApartmentGrid({ apartments, onApartmentSelect }: ApartmentGridPr
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {apartments.map((apartment) => (
         <ApartmentCard 
           key={apartment.id} 
