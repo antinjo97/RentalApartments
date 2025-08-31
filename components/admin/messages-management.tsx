@@ -6,29 +6,24 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { MessageSquare, Mail, Phone, Search, Eye, Check, ChevronDown, ChevronUp } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { format } from "date-fns"
 import type { ContactMessage } from "@/lib/types"
 import { useI18n } from "@/lib/i18n/context"
 
 interface MessagesManagementProps {
   messages: ContactMessage[]
+  onMessageUpdate: () => void
 }
 
-export function MessagesManagement({ messages }: MessagesManagementProps) {
+export function MessagesManagement({ messages, onMessageUpdate }: MessagesManagementProps) {
   const { t } = useI18n()
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<"all" | "read" | "unread">("all")
   const [openMessages, setOpenMessages] = useState<Set<string>>(new Set())
   const [updatingMessages, setUpdatingMessages] = useState<Set<string>>(new Set())
-  const [localMessages, setLocalMessages] = useState(messages)
 
-  // Update local messages when prop changes
-  useEffect(() => {
-    setLocalMessages(messages)
-  }, [messages])
-
-  const filteredMessages = localMessages.filter((message) => {
+  const filteredMessages = messages.filter((message) => {
     const matchesSearch =
       message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -44,9 +39,9 @@ export function MessagesManagement({ messages }: MessagesManagementProps) {
   })
 
   const statusCounts = {
-    all: localMessages.length,
-    unread: localMessages.filter((m) => !m.is_read).length,
-    read: localMessages.filter((m) => m.is_read).length,
+    all: messages.length,
+    unread: messages.filter((m) => !m.is_read).length,
+    read: messages.filter((m) => m.is_read).length,
   }
 
   // Toggle message open/close
@@ -78,14 +73,9 @@ export function MessagesManagement({ messages }: MessagesManagementProps) {
 
       if (response.ok) {
         const result = await response.json()
-        console.log('Message marked as read successfully:', result)
         
-        // Update the local state instead of refreshing the page
-        setLocalMessages(prevMessages => 
-          prevMessages.map(msg => 
-            msg.id === messageId ? { ...msg, is_read: true } : msg
-          )
-        )
+        // Call the callback to refresh messages from database
+        onMessageUpdate()
         
         // Also close the message if it's open
         setOpenMessages(prev => {

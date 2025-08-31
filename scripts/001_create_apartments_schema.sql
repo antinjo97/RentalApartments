@@ -134,6 +134,14 @@ CREATE POLICY "Admins can view contact messages" ON public.contact_messages
     )
   );
 
+CREATE POLICY "Admins can update contact messages" ON public.contact_messages
+  FOR UPDATE USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles 
+      WHERE profiles.id = auth.uid() AND profiles.is_admin = true
+    )
+  );
+
 CREATE POLICY "Anyone can create contact messages" ON public.contact_messages
   FOR INSERT WITH CHECK (true);
 
