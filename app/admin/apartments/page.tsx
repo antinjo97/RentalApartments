@@ -6,8 +6,10 @@ import { Footer } from "@/components/layout/footer"
 import { useAdmin } from "@/hooks/use-admin"
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
+import { useI18n } from "@/lib/i18n/context"
 
 export default function AdminApartmentsPage() {
+  const { t } = useI18n()
   const { isAdmin, isLoading } = useAdmin()
   const [apartments, setApartments] = useState([])
   const [isDataLoading, setIsDataLoading] = useState(true)
@@ -42,7 +44,7 @@ export default function AdminApartmentsPage() {
   if (isLoading || isDataLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg">{t("loading")}</div>
       </div>
     )
   }

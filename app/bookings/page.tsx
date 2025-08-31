@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { BookingsList } from "@/components/booking/bookings-list"
 import { redirect } from "next/navigation"
+import { BookingsPageClient } from "@/components/booking/bookings-page-client"
 
 export default async function BookingsPage() {
   const supabase = await createClient()
@@ -38,12 +39,7 @@ export default async function BookingsPage() {
 
       {/* Main content area */}
       <div className="flex-1 container mx-auto px-4 py-6 sm:py-8">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Moje rezervacije / My Bookings</h1>
-          <p className="text-muted-foreground">Pregled svih vaših rezervacija / Overview of all your bookings</p>
-        </div>
-
-        <BookingsList bookings={bookings || []} />
+        <BookingsPageClient bookings={bookings || []} />
       </div>
 
       {/* Footer at the bottom */}

@@ -10,6 +10,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import type { Apartment } from "@/lib/types"
+import { useI18n } from "@/lib/i18n/context"
 
 interface ApartmentDetailsProps {
   apartment: Apartment
@@ -46,6 +47,7 @@ const amenityLabels: Record<string, string> = {
 }
 
 export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
+  const { t } = useI18n()
   const [selectedImage, setSelectedImage] = useState(0)
   const images = apartment.images || ["/placeholder.svg?height=600&width=800"]
 
@@ -54,10 +56,10 @@ export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
       {/* Back Button */}
       <div className="mb-4 sm:mb-6">
         <Button variant="ghost" asChild className="text-sm sm:text-base">
-          <Link href="/apartments">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Natrag na apartmane / Back to apartments
-          </Link>
+                      <Link href="/apartments">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              {t("back")} {t("to")} {t("apartments")}
+            </Link>
         </Button>
       </div>
 
@@ -113,16 +115,16 @@ export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
-                <span>{apartment.max_guests} gostiju / guests</span>
+                <span>{apartment.max_guests} {t("guests")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Bed className="h-5 w-5 text-primary" />
-                <span>{apartment.bedrooms} spavaće sobe / bedrooms</span>
+                <span>{apartment.bedrooms} {t("bedrooms")}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Bath className="h-5 w-5 text-primary" />
-                <span>{apartment.bathrooms} kupaone / bathrooms</span>
-              </div>
+                              <div className="flex items-center gap-2">
+                  <Bath className="h-5 w-5 text-primary" />
+                  <span>{apartment.bathrooms} {t("apartmentBathrooms")}</span>
+                </div>
             </div>
 
             <Separator />
@@ -130,7 +132,7 @@ export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
             {/* Description */}
             {apartment.description && (
               <div>
-                <h2 className="text-lg sm:text-xl font-semibold mb-3">Opis / Description</h2>
+                <h2 className="text-lg sm:text-xl font-semibold mb-3">{t("apartmentDescription")}</h2>
                 <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{apartment.description}</p>
               </div>
             )}
@@ -139,7 +141,7 @@ export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
 
             {/* Amenities */}
             <div>
-              <h2 className="text-lg sm:text-xl font-semibold mb-4">Sadržaji / Amenities</h2>
+              <h2 className="text-lg sm:text-xl font-semibold mb-4">{t("apartmentAmenities")}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
                 {apartment.amenities?.map((amenity) => (
                   <div key={amenity} className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg bg-muted/50">
@@ -159,12 +161,12 @@ export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
               <CardHeader>
                 <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <span className="text-xl sm:text-2xl font-bold">€{apartment.price_per_night}</span>
-                  <span className="text-xs sm:text-sm text-muted-foreground">po noći / per night</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">{t("pricePerNight")}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button size="lg" className="w-full text-sm sm:text-base" asChild>
-                  <Link href={`/apartments/${apartment.id}/book`}>Rezerviraj sada / Book Now</Link>
+                  <Link href={`/apartments/${apartment.id}/book`}>{t("bookNow")}</Link>
                 </Button>
 
                 <div className="text-center text-xs sm:text-sm text-muted-foreground">

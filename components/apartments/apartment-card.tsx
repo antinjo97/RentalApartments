@@ -6,6 +6,7 @@ import { MapPin, Users, Bed, Bath, Wifi, Car, Waves, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import type { Apartment } from "@/lib/types"
+import { useI18n } from "@/lib/i18n/context"
 
 interface ApartmentCardProps {
   apartment: Apartment
@@ -28,6 +29,7 @@ const amenityIcons: Record<string, React.ReactNode> = {
 }
 
 export function ApartmentCard({ apartment, onSelect }: ApartmentCardProps) {
+  const { t } = useI18n()
   const mainImage = apartment.images?.[0] || "/placeholder.svg?height=300&width=400"
 
   return (
@@ -48,7 +50,7 @@ export function ApartmentCard({ apartment, onSelect }: ApartmentCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
           <div className="absolute top-4 left-4">
             <Badge className="bg-gradient-to-r from-primary to-primary/90 text-white border-0 shadow-lg px-3 py-1.5 text-sm font-semibold">
-              €{apartment.price_per_night}/noć
+              €{apartment.price_per_night}/{t("perNight")}
             </Badge>
           </div>
         </div>
@@ -82,19 +84,19 @@ export function ApartmentCard({ apartment, onSelect }: ApartmentCardProps) {
                 <div className="p-2 rounded-lg bg-primary/10 text-primary">
                   <Users className="h-4 w-4" />
                 </div>
-                <span className="font-medium">{apartment.max_guests} gostiju</span>
+                <span className="font-medium">{apartment.max_guests} {t("guests")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-primary/10 text-primary">
                   <Bed className="h-4 w-4" />
                 </div>
-                <span className="font-medium">{apartment.bedrooms} soba</span>
+                <span className="font-medium">{apartment.bedrooms} {t("bedrooms")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-primary/10 text-primary">
                   <Bath className="h-4 w-4" />
                 </div>
-                <span className="font-medium">{apartment.bathrooms} kupaona</span>
+                <span className="font-medium">{apartment.bathrooms} {t("apartmentBathrooms")}</span>
               </div>
             </div>
 
@@ -116,10 +118,10 @@ export function ApartmentCard({ apartment, onSelect }: ApartmentCardProps) {
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button asChild className="w-full sm:flex-1 shadow-lg hover:shadow-xl">
-                <Link href={`/apartments/${apartment.id}`}>Pogledaj detalje / View Details</Link>
+                <Link href={`/apartments/${apartment.id}`}>{t("viewDetails")}</Link>
               </Button>
               <Button variant="outline" asChild className="w-full sm:flex-1 shadow-md hover:shadow-lg">
-                <Link href={`/apartments/${apartment.id}/book`}>Rezerviraj / Book</Link>
+                <Link href={`/apartments/${apartment.id}/book`}>{t("bookNow")}</Link>
               </Button>
             </div>
           </div>

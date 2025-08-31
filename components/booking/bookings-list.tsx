@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -6,25 +8,28 @@ import { format } from "date-fns"
 import Link from "next/link"
 import Image from "next/image"
 import type { Booking } from "@/lib/types"
+import { useI18n } from "@/lib/i18n/context"
 
 interface BookingsListProps {
   bookings: (Booking & { apartment: any })[]
 }
 
 const statusLabels = {
-  pending: { label: "Na čekanju / Pending", variant: "secondary" as const },
-  confirmed: { label: "Potvrđeno / Confirmed", variant: "default" as const },
-  cancelled: { label: "Otkazano / Cancelled", variant: "destructive" as const },
-  completed: { label: "Završeno / Completed", variant: "outline" as const },
+  pending: { label: "pending", variant: "secondary" as const },
+  confirmed: { label: "confirmed", variant: "default" as const },
+  cancelled: { label: "cancelled", variant: "destructive" as const },
+  completed: { label: "completed", variant: "outline" as const },
 }
 
 export function BookingsList({ bookings }: BookingsListProps) {
+  const { t } = useI18n()
+
   if (bookings.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground text-lg mb-4">Nemate rezervacija / You don't have any bookings yet</p>
+        <p className="text-muted-foreground text-lg mb-4">{t("noBookingsYet")}</p>
         <Button asChild>
-          <Link href="/apartments">Pretraži apartmane / Browse Apartments</Link>
+          <Link href="/apartments">{t("browseApartments")}</Link>
         </Button>
       </div>
     )
@@ -67,7 +72,7 @@ export function BookingsList({ bookings }: BookingsListProps) {
                         </span>
                       </div>
                     </div>
-                    <Badge variant={status.variant}>{status.label}</Badge>
+                    <Badge variant={status.variant}>{t(status.label)}</Badge>
                   </div>
                 </CardHeader>
 
@@ -81,16 +86,16 @@ export function BookingsList({ bookings }: BookingsListProps) {
                           {format(new Date(booking.check_in_date), "dd.MM.yyyy")} -{" "}
                           {format(new Date(booking.check_out_date), "dd.MM.yyyy")}
                         </span>
-                        <span className="text-muted-foreground">({nights} noći)</span>
+                        <span className="text-muted-foreground">({nights} {t("nights")})</span>
                       </div>
 
                       <div className="flex items-center gap-2 text-sm">
                         <Users className="h-4 w-4 text-primary" />
-                        <span>{booking.total_guests} gostiju / guests</span>
+                        <span>{booking.total_guests} {t("guests")}</span>
                       </div>
 
                       <div className="text-sm">
-                        <span className="font-medium">Ukupna cijena / Total: €{booking.total_price}</span>
+                        <span className="font-medium">{t("totalPrice")}: €{booking.total_price}</span>
                       </div>
                     </div>
 
@@ -111,7 +116,7 @@ export function BookingsList({ bookings }: BookingsListProps) {
                       </div>
 
                       <div className="text-xs text-muted-foreground">
-                        Rezervirano / Booked: {format(new Date(booking.created_at), "dd.MM.yyyy HH:mm")}
+                        {t("booked")}: {format(new Date(booking.created_at), "dd.MM.yyyy HH:mm")}
                       </div>
                     </div>
                   </div>
@@ -120,7 +125,7 @@ export function BookingsList({ bookings }: BookingsListProps) {
                   {booking.special_requests && (
                     <div className="mt-4 p-3 bg-muted/50 rounded-lg">
                       <p className="text-sm">
-                        <span className="font-medium">Posebni zahtjevi / Special requests:</span>{" "}
+                        <span className="font-medium">{t("specialRequests")}: </span>
                         {booking.special_requests}
                       </p>
                     </div>
@@ -129,11 +134,11 @@ export function BookingsList({ bookings }: BookingsListProps) {
                   {/* Actions */}
                   <div className="flex gap-2 mt-4">
                     <Button variant="outline" size="sm" asChild>
-                      <Link href={`/apartments/${apartment?.id}`}>Pogledaj apartman / View Apartment</Link>
+                      <Link href={`/apartments/${apartment?.id}`}>{t("viewApartment")}</Link>
                     </Button>
                     {booking.status === "pending" && (
                       <Button variant="outline" size="sm">
-                        Otkaži / Cancel
+                        {t("cancel")}
                       </Button>
                     )}
                   </div>

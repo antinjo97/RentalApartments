@@ -209,7 +209,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                         </div>
                         <div className="flex items-center gap-1">
                           <Bath className="h-4 w-4" />
-                          <span>{apartment.bathrooms} kupaona</span>
+                          <span>{apartment.bathrooms} {t("apartmentBathrooms")}</span>
                         </div>
                       </div>
 
@@ -222,7 +222,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                         ))}
                         {apartment.amenities && apartment.amenities.length > 5 && (
                           <Badge variant="outline" className="text-xs">
-                            +{apartment.amenities.length - 5} više
+                            +{apartment.amenities.length - 5} {t("more")}
                           </Badge>
                         )}
                       </div>
@@ -238,7 +238,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                           {t("delete")}
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => handleToggleAvailability(apartment)}>
-                          {apartment.is_available ? "Označi nedostupnim" : "Označi dostupnim"}
+                          {apartment.is_available ? t("markAsUnavailable") : t("markAsAvailable")}
                         </Button>
                       </div>
                     </div>

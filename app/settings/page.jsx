@@ -43,12 +43,12 @@ export default function SettingsPage() {
 
   const handlePasswordUpdate = async () => {
     if (newPassword !== confirmPassword) {
-      alert("Passwords don't match / Lozinke se ne poklapaju")
+      alert(t("passwordsNotMatch"))
       return
     }
 
     if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters / Lozinka mora imati najmanje 6 znakova")
+      alert(t("passwordTooShort"))
       return
     }
 
@@ -58,9 +58,9 @@ export default function SettingsPage() {
     })
 
     if (error) {
-      alert("Error updating password / Greška pri ažuriranju lozinke")
+      alert(t("errorUpdatingPassword"))
     } else {
-      alert("Password updated successfully / Lozinka je uspješno ažurirana")
+      alert(t("passwordUpdatedSuccessfully"))
       setCurrentPassword("")
       setNewPassword("")
       setConfirmPassword("")
@@ -73,7 +73,7 @@ export default function SettingsPage() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">Loading...</div>
+          <div className="text-center">{t("loading")}</div>
         </div>
         <Footer />
       </div>
@@ -88,8 +88,8 @@ export default function SettingsPage() {
       <div className="flex-1 container mx-auto py-6 sm:py-8 max-w-2xl space-y-4 sm:space-y-6 px-4">
         <Card>
           <CardHeader>
-            <CardTitle>Jezik / Language</CardTitle>
-            <CardDescription>Odaberite jezik / Choose your language</CardDescription>
+            <CardTitle>{t("language")}</CardTitle>
+            <CardDescription>{t("chooseLanguage")}</CardDescription>
           </CardHeader>
           <CardContent>
             <LanguageSwitcher />
@@ -98,12 +98,12 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Promjena lozinke / Change Password</CardTitle>
-            <CardDescription>Ažurirajte svoju lozinku / Update your password</CardDescription>
+            <CardTitle>{t("changePassword")}</CardTitle>
+            <CardDescription>{t("updatePassword")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="new_password">Nova lozinka / New Password</Label>
+              <Label htmlFor="new_password">{t("newPassword")}</Label>
               <Input
                 id="new_password"
                 type="password"
@@ -112,7 +112,7 @@ export default function SettingsPage() {
               />
             </div>
             <div>
-              <Label htmlFor="confirm_password">Potvrdi lozinku / Confirm Password</Label>
+              <Label htmlFor="confirm_password">{t("confirmPassword")}</Label>
               <Input
                 id="confirm_password"
                 type="password"
@@ -121,7 +121,7 @@ export default function SettingsPage() {
               />
             </div>
             <Button onClick={handlePasswordUpdate} disabled={updating}>
-              {updating ? "Ažuriranje..." : "Ažuriraj lozinku / Update Password"}
+              {updating ? t("updating") : t("updatePasswordButton")}
             </Button>
           </CardContent>
         </Card>

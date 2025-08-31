@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import type { Apartment } from "@/lib/types"
 import type { google } from "google-maps"
+import { useI18n } from "@/lib/i18n/context"
 
 interface ApartmentMapProps {
   apartments: Apartment[]
@@ -13,6 +14,7 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<google.maps.Marker[]>([])
+  const { t } = useI18n()
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -74,8 +76,11 @@ export function ApartmentMap({ apartments, selectedApartment }: ApartmentMapProp
             <div style="max-width: 200px;">
               <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">${apartment.title}</h3>
               <p style="margin: 0 0 8px 0; font-size: 12px; color: #666;">${apartment.address}, ${apartment.city}</p>
-              <p style="margin: 0 0 8px 0; font-size: 12px;"><strong>€${apartment.price_per_night}/noć</strong></p>
-              <a href="/apartments/${apartment.id}" style="color: #0891b2; text-decoration: none; font-size: 12px;">Pogledaj detalje →</a>
+              <p style="margin: 0 0 8px 0; font-size: 12px;"><strong>€${apartment.price_per_night}/${t("perNight")}</strong></p>
+              <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <a href="/apartments/${apartment.id}" style="color: #0891b2; text-decoration: none; font-size: 12px; padding: 4px 8px; border: 1px solid #0891b2; border-radius: 4px;">${t("viewDetails")}</a>
+                <a href="/apartments/${apartment.id}/book" style="color: white; text-decoration: none; font-size: 12px; padding: 4px 8px; background-color: #0891b2; border-radius: 4px;">${t("bookNow")}</a>
+              </div>
             </div>
           `,
         })
