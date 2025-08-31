@@ -14,6 +14,7 @@ import { X, Plus } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { useI18n } from "@/lib/i18n/context"
 import type { Apartment } from "@/lib/types"
+import { translations } from "@/lib/i18n/translations"
 
 interface ApartmentFormProps {
   apartment?: Apartment
@@ -28,18 +29,18 @@ const AMENITIES_OPTIONS = [
   "gym",
   "balcony",
   "terrace",
-  "sea_view",
-  "air_conditioning",
+  "seaView",
+  "airConditioning",
   "heating",
   "kitchen",
-  "washing_machine",
+  "washingMachine",
   "dishwasher",
   "tv",
   "netflix",
-  "beach_access",
+  "beachAccess",
   "garden",
   "bbq",
-  "pets_allowed",
+  "petsAllowed",
 ]
 
 const CITIES = ["Umag", "Novigrad", "Poreč", "Rovinj", "Pula", "Rijeka", "Krk", "Cres", "Pag", "Zadar"]
@@ -249,7 +250,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
             {/* Location */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="latitude">Latitude *</Label>
+                <Label htmlFor="latitude">{t("latitude")} *</Label>
                 <Input
                   id="latitude"
                   type="number"
@@ -261,7 +262,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
               </div>
 
               <div>
-                <Label htmlFor="longitude">Longitude *</Label>
+                <Label htmlFor="longitude">{t("longitude")} *</Label>
                 <Input
                   id="longitude"
                   type="number"
@@ -298,7 +299,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
                         formData.amenities.includes(amenity) ? removeAmenity(amenity) : addAmenity(amenity)
                       }
                     >
-                      {amenity.replace(/_/g, " ")}
+                      {t(amenity as any)}
                     </Button>
                   ))}
                 </div>
@@ -311,7 +312,7 @@ export function ApartmentForm({ apartment, onClose, onSuccess }: ApartmentFormPr
                       className="cursor-pointer"
                       onClick={() => removeAmenity(amenity)}
                     >
-                      {amenity.replace(/_/g, " ")} <X className="ml-1 h-3 w-3" />
+                      {t(amenity as any)} <X className="ml-1 h-3 w-3" />
                     </Badge>
                   ))}
                 </div>

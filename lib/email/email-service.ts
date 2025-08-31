@@ -10,8 +10,13 @@ export class EmailService {
    */
   static async sendContactNotification(message: ContactMessage): Promise<boolean> {
     try {
-      // Use Resend API key directly
-      const resendApiKey = 're_KCBfFtXL_92Wic94zb17zopA2hBdnvQtE'
+      // Get Resend API key from environment variable
+      const resendApiKey = process.env.RESEND_API_KEY
+      
+      if (!resendApiKey) {
+        console.warn("RESEND_API_KEY environment variable not set, falling back to console mode")
+        return await this.sendToConsole(message)
+      }
       
       // Always use Resend to send actual email
       return await this.sendWithResend(message, resendApiKey)
@@ -63,7 +68,8 @@ export class EmailService {
     console.log("Name:", message.name)
     console.log("Phone:", message.phone || "Not provided")
     console.log("---")
-    console.log("💡 To enable real email sending, set RESEND_API_KEY environment variable")
+    console.log("💡 To enable real email sending, create .env.local file with:")
+    console.log("💡 RESEND_API_KEY=your_resend_api_key_here")
     console.log("💡 Sign up at https://resend.com for free email API")
     return true
   }

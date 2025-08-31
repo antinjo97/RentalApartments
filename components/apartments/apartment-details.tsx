@@ -29,25 +29,41 @@ const amenityIcons: Record<string, React.ReactNode> = {
   terrace: <span className="text-sm">🏡</span>,
   beach_access: <span className="text-sm">🏖️</span>,
   historic_building: <span className="text-sm">🏛️</span>,
-}
-
-const amenityLabels: Record<string, string> = {
-  wifi: "WiFi",
-  parking: "Parking",
-  sea_view: "Pogled na more / Sea view",
-  air_conditioning: "Klima uređaj / Air conditioning",
-  kitchen: "Kuhinja / Kitchen",
-  balcony: "Balkon / Balcony",
-  pool: "Bazen / Pool",
-  garden: "Vrt / Garden",
-  washing_machine: "Perilica / Washing machine",
-  terrace: "Terasa / Terrace",
-  beach_access: "Pristup plaži / Beach access",
-  historic_building: "Povijesna zgrada / Historic building",
+  // Additional amenities
+  gym: <span className="text-sm">💪</span>,
+  heating: <span className="text-sm">🔥</span>,
+  dishwasher: <span className="text-sm">🍽️</span>,
+  tv: <span className="text-sm">📺</span>,
+  netflix: <span className="text-sm">🎬</span>,
+  bbq: <span className="text-sm">🍖</span>,
+  pets_allowed: <span className="text-sm">🐾</span>,
 }
 
 export function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
   const { t } = useI18n()
+  
+  const amenityLabels: Record<string, string> = {
+    wifi: t("wifi"),
+    parking: t("parking"),
+    sea_view: t("seaView"),
+    air_conditioning: t("airConditioning"),
+    kitchen: t("kitchen"),
+    balcony: t("balcony"),
+    pool: t("pool"),
+    garden: t("garden"),
+    washing_machine: t("washingMachine"),
+    terrace: t("terrace"),
+    beach_access: t("beachAccess"),
+    historic_building: t("historicBuilding"),
+    // Additional amenities
+    gym: t("gym"),
+    heating: t("heating"),
+    dishwasher: t("dishwasher"),
+    tv: t("tv"),
+    netflix: t("netflix"),
+    bbq: t("bbq"),
+    pets_allowed: t("petsAllowed"),
+  }
   const [selectedImage, setSelectedImage] = useState(0)
   const images = apartment.images || ["/placeholder.svg?height=600&width=800"]
 
