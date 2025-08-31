@@ -92,12 +92,12 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{t("apartmentsManagementTitle")}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t("apartmentsManagementTitle")}</h1>
           <p className="text-muted-foreground">{t("apartmentsManagementSubtitle")}</p>
         </div>
-        <Button onClick={handleAddApartment}>
+        <Button onClick={handleAddApartment} className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
           {t("addApartment")}
         </Button>
@@ -118,11 +118,12 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                 />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant={statusFilter === "all" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("all")}
+                className="text-xs sm:text-sm"
               >
                 {t("allBookings")} ({apartmentsList.length})
               </Button>
@@ -130,6 +131,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                 variant={statusFilter === "available" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("available")}
+                className="text-xs sm:text-sm"
               >
                 {t("available")} ({apartmentsList.filter((a) => a.is_available).length})
               </Button>
@@ -137,6 +139,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                 variant={statusFilter === "unavailable" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("unavailable")}
+                className="text-xs sm:text-sm"
               >
                 {t("unread")} ({apartmentsList.filter((a) => !a.is_available).length})
               </Button>
@@ -156,9 +159,9 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
         ) : (
           filteredApartments.map((apartment) => (
             <Card key={apartment.id}>
-              <div className="md:flex">
+              <div className="flex flex-col md:flex-row">
                 {/* Image */}
-                <div className="md:w-1/4 relative h-48 md:h-auto">
+                <div className="w-full md:w-1/4 relative h-48 md:h-auto">
                   <Image
                     src={apartment.images?.[0] || "/placeholder.svg?height=200&width=300"}
                     alt={apartment.title}
@@ -169,9 +172,9 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                 </div>
 
                 {/* Content */}
-                <div className="md:w-3/4">
+                <div className="w-full md:w-3/4">
                   <CardHeader>
-                    <div className="flex items-start justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                       <div>
                         <CardTitle className="text-xl">{apartment.title}</CardTitle>
                         <div className="flex items-center text-muted-foreground mt-1">
@@ -198,7 +201,7 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                       )}
 
                       {/* Details */}
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4" />
                           <span>{apartment.max_guests} {t("guests")}</span>
@@ -228,16 +231,23 @@ export function ApartmentsManagement({ apartments }: ApartmentsManagementProps) 
                       </div>
 
                       {/* Actions */}
-                      <div className="flex gap-2 pt-2">
-                        <Button variant="outline" size="sm" onClick={() => handleEditApartment(apartment)}>
-                          <Edit className="mr-2 h-4 w-4" />
-                          {t("edit")}
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleDeleteApartment(apartment.id)}>
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          {t("delete")}
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleToggleAvailability(apartment)}>
+                      <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" onClick={() => handleEditApartment(apartment)}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            {t("edit")}
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleDeleteApartment(apartment.id)}>
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            {t("delete")}
+                          </Button>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleToggleAvailability(apartment)}
+                          className="w-full sm:w-auto"
+                        >
                           {apartment.is_available ? t("markAsUnavailable") : t("markAsAvailable")}
                         </Button>
                       </div>

@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
 import { UserNav } from "@/components/auth/user-nav"
 import { LanguageSwitcher } from "@/components/i18n/language-switcher"
-import { Home, MapPin, Calendar, Menu, X } from "lucide-react"
+import { Home, MapPin, Calendar, Menu, X, Star } from "lucide-react"
 import { useI18n } from "@/lib/i18n/context"
 
 export function Header() {
@@ -55,6 +55,14 @@ export function Header() {
             >
               <MapPin className="h-4 w-4" />
               <span className="relative z-10">{t("apartments")}</span>
+              <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Link>
+            <Link 
+              href="/recommendations" 
+              className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-primary hover:bg-primary/10 group flex items-center gap-2"
+            >
+              <Star className="h-4 w-4" />
+              <span className="relative z-10">{t("recommendations")}</span>
               <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
             <Link 
@@ -119,6 +127,14 @@ export function Header() {
           >
             <MapPin className="h-4 w-4" />
             {t("apartments")}
+          </Link>
+          <Link 
+            href="/recommendations" 
+            className="block py-3 px-4 text-sm font-medium transition-all duration-300 hover:text-primary hover:bg-primary/10 rounded-lg text-foreground/70 hover:text-foreground flex items-center gap-3"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <Star className="h-4 w-4" />
+            {t("recommendations")}
           </Link>
           <Link 
             href="/bookings" 

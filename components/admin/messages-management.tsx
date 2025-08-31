@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { MessageSquare, Mail, Phone, Search, Eye, Check, ChevronDown, ChevronUp } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { MessageSquare, Mail, Phone, Search, Eye, Check, ChevronDown, ChevronUp, Reply, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { format } from "date-fns"
 import type { ContactMessage } from "@/lib/types"
@@ -22,6 +24,10 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
   const [statusFilter, setStatusFilter] = useState<"all" | "read" | "unread">("all")
   const [openMessages, setOpenMessages] = useState<Set<string>>(new Set())
   const [updatingMessages, setUpdatingMessages] = useState<Set<string>>(new Set())
+  const [replyingTo, setReplyingTo] = useState<string | null>(null)
+  const [replyMessage, setReplyMessage] = useState("")
+  const [adminName, setAdminName] = useState("")
+  const [isSendingReply, setIsSendingReply] = useState(false)
 
   const filteredMessages = messages.filter((message) => {
     const matchesSearch =
@@ -105,16 +111,100 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
     }
   }
 
+  // Send reply to message
+  const sendReply = async (messageId: string) => {
+    if (!replyMessage.trim()) return
+    
+    setIsSendingReply(true)
+    
+    try {
+      const response = await fetch(`/api/messages/${messageId}/reply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          replyMessage: replyMessage.trim(),
+          adminName: adminName.trim() || 'Admin tim'
+        }),
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        
+        // Reset form
+        setReplyMessage("")
+        setReplyingTo(null)
+        
+        // Refresh messages
+        onMessageUpdate()
+        
+        // Close the message if it's open
+        setOpenMessages(prev => {
+          const newSet = new Set(prev)
+          newSet.delete(messageId)
+          return newSet
+        })
+        
+        // Show success message
+        alert('Odgovor uspješno poslan!')
+      } else {
+        const errorData = await response.json()
+        console.error('Failed to send reply:', errorData)
+        alert(`Greška: ${errorData.error || 'Nepoznata greška'}`)
+      }
+    } catch (error) {
+      console.error('Error sending reply:', error)
+      alert(`Greška: ${error instanceof Error ? error.message : 'Nepoznata greška'}`)
+    } finally {
+      setIsSendingReply(false)
+    }
+  }
+
+  // Delete message
+  const deleteMessage = async (messageId: string) => {
+    if (confirm('Jeste li sigurni da želite obrisati ovu poruku? Ova akcija se ne može poništiti.')) {
+      try {
+        const response = await fetch(`/api/messages/${messageId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        if (response.ok) {
+          // Refresh messages from database
+          onMessageUpdate()
+          
+          // Close the message if it's open
+          setOpenMessages(prev => {
+            const newSet = new Set(prev)
+            newSet.delete(messageId)
+            return newSet
+          })
+          
+          alert('Poruka uspješno obrisana!')
+        } else {
+          const errorData = await response.json()
+          alert(`Greška: ${errorData.error || 'Nepoznata greška'}`)
+        }
+      } catch (error) {
+        console.error('Error deleting message:', error)
+        alert(`Greška: ${error instanceof Error ? error.message : 'Nepoznata greška'}`)
+      }
+    }
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{t("messagesManagementTitle")}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t("messagesManagementTitle")}</h1>
             <p className="text-muted-foreground">{t("messagesManagementSubtitle")}</p>
           </div>
           {statusCounts.unread > 0 && (
-            <Badge variant="destructive" className="text-lg px-4 py-2 animate-pulse">
+            <Badge variant="destructive" className="text-lg px-4 py-2 animate-pulse w-full sm:w-auto text-center">
               {statusCounts.unread} {t("unread")}
             </Badge>
           )}
@@ -136,12 +226,12 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                 />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant={statusFilter === "all" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("all")}
-                className={statusCounts.unread > 0 ? "relative" : ""}
+                className={`text-xs sm:text-sm ${statusCounts.unread > 0 ? "relative" : ""}`}
               >
                 {t("allMessages")} ({statusCounts.all})
                 {statusCounts.unread > 0 && (
@@ -152,7 +242,7 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                 variant={statusFilter === "unread" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("unread")}
-                className={statusCounts.unread > 0 ? "relative" : ""}
+                className={`text-xs sm:text-sm ${statusCounts.unread > 0 ? "relative" : ""}`}
               >
                 {t("onlyUnread")} ({statusCounts.unread})
                 {statusCounts.unread > 0 && (
@@ -163,6 +253,7 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                 variant={statusFilter === "read" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setStatusFilter("read")}
+                className="text-xs sm:text-sm"
               >
                 {t("onlyRead")} ({statusCounts.read})
               </Button>
@@ -190,9 +281,9 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
               }`}
             >
               <CardHeader>
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <CardTitle className="text-lg">{message.name}</CardTitle>
                       {!message.is_read && (
                         <Badge variant="default" className="animate-pulse bg-red-500 hover:bg-red-600">
@@ -200,7 +291,7 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                         </Badge>
                       )}
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Mail className="h-4 w-4" />
                         <span>{message.email}</span>
@@ -214,13 +305,14 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                       <span>{format(new Date(message.created_at), "dd.MM.yyyy HH:mm")}</span>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button 
                           variant="outline" 
                           size="sm"
                           onClick={() => toggleMessage(message.id)}
+                          className="w-full sm:w-auto"
                         >
                           {openMessages.has(message.id) ? (
                             <ChevronUp className="mr-2 h-4 w-4" />
@@ -241,6 +333,7 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                             size="sm"
                             onClick={() => markAsRead(message.id)}
                             disabled={updatingMessages.has(message.id)}
+                            className="w-full sm:w-auto"
                           >
                             <Check className="mr-2 h-4 w-4" />
                             {updatingMessages.has(message.id) ? (
@@ -282,13 +375,82 @@ export function MessagesManagement({ messages, onMessageUpdate }: MessagesManage
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 pt-2">
-                      <Button variant="outline" size="sm">
-                        <MessageSquare className="mr-2 h-4 w-4" />
-                        {t("reply")}
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Arhiviraj / Archive
+                    <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                      {/* Reply Button */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => setReplyingTo(message.id)}
+                            className="w-full sm:w-auto"
+                          >
+                            <Reply className="mr-2 h-4 w-4" />
+                            {t("reply")}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl">
+                          <DialogHeader>
+                            <DialogTitle>Odgovori na poruku</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div>
+                              <label className="text-sm font-medium">Vaše ime:</label>
+                              <Input
+                                placeholder="Unesite vaše ime"
+                                value={adminName}
+                                onChange={(e) => setAdminName(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium">Odgovor:</label>
+                              <Textarea
+                                placeholder="Unesite vaš odgovor..."
+                                value={replyMessage}
+                                onChange={(e) => setReplyMessage(e.target.value)}
+                                rows={6}
+                              />
+                            </div>
+                            <div className="flex flex-col sm:flex-row justify-end gap-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => {
+                                  setReplyingTo(null)
+                                  setReplyMessage("")
+                                  setAdminName("")
+                                }}
+                                className="w-full sm:w-auto"
+                              >
+                                Odustani
+                              </Button>
+                              <Button
+                                onClick={() => sendReply(message.id)}
+                                disabled={isSendingReply || !replyMessage.trim()}
+                                className="w-full sm:w-auto"
+                              >
+                                {isSendingReply ? (
+                                  <>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                    Slanje...
+                                  </>
+                                ) : (
+                                  'Pošalji odgovor'
+                                )}
+                              </Button>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+
+                      {/* Delete Button */}
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => deleteMessage(message.id)}
+                        className="w-full sm:w-auto"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Obriši
                       </Button>
                     </div>
                   </div>

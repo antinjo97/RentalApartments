@@ -136,6 +136,10 @@ export class EmailService {
             <div class="footer">
               <p>This message was sent from your contact form at ${new Date().toLocaleString()}</p>
               <p>Message ID: ${message.id}</p>
+              <p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #dee2e6; font-size: 12px; color: #6c757d;">
+                <strong>Privacy Policy:</strong> Ova poruka i osobni podaci se koriste isključivo za odgovor na vaš upit. 
+                Podaci se ne dijele s trećim stranama i mogu biti obrisani na vaš zahtjev.
+              </p>
             </div>
           </div>
         </body>
